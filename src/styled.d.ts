@@ -8,5 +8,6 @@ declare module "styled-components" {
     categoryColor: string;
     postBgColor: string;
     textColor: string;
+    borderColor: string;
   }
 }
