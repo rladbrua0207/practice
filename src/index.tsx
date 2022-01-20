@@ -84,6 +84,7 @@ a {
   a:active {
     text-decoration: none;
     color: #fff;
+    cursor: pointer;
   }
 `;
 

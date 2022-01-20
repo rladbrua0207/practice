@@ -1,18 +1,27 @@
-import React from "react";
+import {
+  faFacebookSquare,
+  faGithub,
+  faGithubSquare,
+  faGoogle,
+} from "@fortawesome/free-brands-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import kakaoLoginImg from "../images/kakaolink_btn_small.png";
+import googleLoginImg from "../images/google_logo_2_littledeep.png";
 
 const SignInForm = styled.form`
   display: flex;
   flex-direction: column;
   background-color: ${(props) => props.theme.postBgColor};
+  align-items: center;
   margin: 150px auto;
   padding-top: 20px;
   border-radius: 15px;
   border: solid #e8e8e8;
   max-width: 400px;
-  height: 330px;
+  height: 400px;
 `;
 
 const SignInInputWrapper = styled.div`
@@ -31,6 +40,8 @@ const SignInInputLabel = styled.label`
 const SignInInput = styled.input`
   height: 40px;
   border-radius: 5px;
+  font-size: 1.4rem;
+  border: none;
 `;
 
 const SignInBtn = styled.button`
@@ -56,7 +67,64 @@ const ErrorSpan = styled.span`
 
 const SignInMoreAction = styled.div`
   display: flex;
-  margin: 0 auto;
+  margin: 10px auto;
+  color: #fff;
+  a {
+    margin: 0 15px;
+    text-underline-position: under;
+    text-decoration: underline;
+  }
+`;
+
+const SocialLoginWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top: 1px solid;
+  border-radius: 4px;
+  border-color: white;
+  width: 50%;
+`;
+
+const SocialLoginTitle = styled.div`
+  color: #fff;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 2px;
+  font-size: 0.75rem;
+`;
+
+const SocialLoginBtn = styled.div`
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 1px;
+  #facebook {
+    font-size: 3rem;
+    color: #1673e8;
+  }
+  #google {
+    background-color: white;
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+    border-radius: 4px;
+    padding: 5px;
+    margin-top: 3px;
+  }
+  #kakao {
+    width: 42px;
+    margin-top: 4px;
+  }
+  #github {
+    font-size: 2rem;
+    background-color: #3c4043;
+    color: white;
+    padding: 5px;
+    border-radius: 4px;
+  }
 `;
 
 interface ISignInForm {
@@ -101,6 +169,30 @@ function SignIn() {
         <Link to={`/findpassword`}>비밀번호 찾기</Link> |
         <Link to={`/signup`}>회원가입</Link>
       </SignInMoreAction>
+
+      <SocialLoginTitle>간편 로그인</SocialLoginTitle>
+      <SocialLoginWrapper>
+        <SocialLoginBtn>
+          <Link to={"/"}>
+            <img src={kakaoLoginImg} id="kakao"></img>
+          </Link>
+        </SocialLoginBtn>
+        <SocialLoginBtn>
+          <Link to={"/"}>
+            <FontAwesomeIcon icon={faGithub} id="github" />
+          </Link>
+        </SocialLoginBtn>
+        <SocialLoginBtn>
+          <Link to={"/"}>
+            <img src={googleLoginImg} id="google"></img>
+          </Link>
+        </SocialLoginBtn>
+        <SocialLoginBtn>
+          <Link to={"/"}>
+            <FontAwesomeIcon icon={faFacebookSquare} id="facebook" />
+          </Link>
+        </SocialLoginBtn>
+      </SocialLoginWrapper>
     </SignInForm>
   );
   //여기부터 다시

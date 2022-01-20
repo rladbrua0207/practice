@@ -30,6 +30,7 @@ const SignUpInputLabel = styled.label`
 const SignUpInput = styled.input`
   height: 40px;
   border-radius: 5px;
+  border: none;
 `;
 
 const SignUpBtn = styled.button`
