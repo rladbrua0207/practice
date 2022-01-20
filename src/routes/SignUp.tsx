@@ -7,7 +7,7 @@ const SignUpForm = styled.form`
   flex-direction: column;
   background-color: ${(props) => props.theme.postBgColor};
   margin: 50px auto;
-  padding-top: 10px;
+  padding-top: 20px;
   border-radius: 15px;
   border: solid #e8e8e8;
   max-width: 400px;
