@@ -70,8 +70,6 @@ const PostTable = styled.table`
   }
 `;
 
-const MakePostBtn = styled.button``;
-
 function Notice() {
   return (
     <div>

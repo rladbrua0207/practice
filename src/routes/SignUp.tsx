@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 
@@ -75,7 +75,7 @@ function SignUp() {
   const { register, handleSubmit, formState, setError } =
     useForm<ISignUpForm>();
 
-  const [isFocus, setIsFocus] = React.useState([false, false]);
+  const [isFocus, setIsFocus] = useState([false, false]);
   const onFocus = (event: React.FocusEvent<HTMLInputElement>) => {
     //username, password input에 포커스를 했을 때 input 규칙을 설명해 주도록
     if (event.currentTarget.id === "username") {

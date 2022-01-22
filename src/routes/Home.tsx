@@ -1,11 +1,11 @@
 import { Route, Routes } from "react-router-dom";
 import styled from "styled-components";
 import NavBar from "../Components/NavBar";
-import Error from "./Error";
 import Notice from "./Notice";
 import Questions from "./Questions";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
+import Write from "./Write";
 
 function Home() {
   return (
@@ -16,6 +16,7 @@ function Home() {
         <Route path="/questions" element={<Questions />}></Route>
         <Route path="/signin" element={<SignIn />}></Route>
         <Route path="/signup" element={<SignUp />}></Route>
+        <Route path="/write" element={<Write />}></Route>
       </Routes>
     </>
   );
