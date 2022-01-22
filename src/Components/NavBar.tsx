@@ -13,15 +13,15 @@ const NavContainer = styled.div`
   }
 
   a {
-    color: #fff;
     text-decoration: none;
     outline: none;
+    color: ${(props) => props.theme.textColor};
   }
 
   a:hover,
   a:active {
-    text-decoration: none;
     color: #fff;
+    text-decoration: none;
   }
 `;
 
@@ -38,7 +38,6 @@ const RightNavBox = styled.div`
 const NavItem = styled.div`
   border-color: ${(props) => props.theme.postBgColor};
   background-color: ${(props) => props.theme.postBgColor};
-  color: ${(props) => props.theme.textColor};
   border-radius: 10px;
   margin: 0 10px;
   padding: 5px 10px;

@@ -77,6 +77,7 @@ function SignUp() {
 
   const [isFocus, setIsFocus] = React.useState([false, false]);
   const onFocus = (event: React.FocusEvent<HTMLInputElement>) => {
+    //username, password input에 포커스를 했을 때 input 규칙을 설명해 주도록
     if (event.currentTarget.id === "username") {
       setIsFocus((value) => [(value[0] = true), (value[1] = false)]);
     } else {
@@ -85,6 +86,7 @@ function SignUp() {
   };
 
   const onBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    //username, password input에 포커스가 풀렸을 때 규칙설명 닫기
     setIsFocus((value) => [(value[0] = false), (value[1] = false)]);
   };
 
@@ -94,7 +96,6 @@ function SignUp() {
         message: "비밀번호가 일치하지 않습니다.",
       });
     }
-    console.log(data);
   };
 
   return (
@@ -173,12 +174,11 @@ function SignUp() {
 
         {isFocus[signUpInfoArr.indexOf("password")] ? (
           <SignUpInputInfo>
-            문자, 숫자, 기호를 조합하여 8자 이상을 사용하세요
+            최소 한개의 문자, 숫자, 기호를 조합하여 8자 이상을 사용하세요
           </SignUpInputInfo>
         ) : (
           ""
         )}
-
         <ErrorSpan>{formState.errors.password?.message}</ErrorSpan>
       </SignUpInputWrapper>
       <SignUpInputWrapper>

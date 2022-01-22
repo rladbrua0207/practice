@@ -1,9 +1,4 @@
-import {
-  faFacebookSquare,
-  faGithub,
-  faGithubSquare,
-  faGoogle,
-} from "@fortawesome/free-brands-svg-icons";
+import { faFacebookSquare, faGithub } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
@@ -22,6 +17,14 @@ const SignInForm = styled.form`
   border: solid #e8e8e8;
   max-width: 400px;
   height: 400px;
+  a {
+    color: #000;
+  }
+  a:hover,
+  a:active {
+    text-decoration: none;
+    color: #fff;
+  }
 `;
 
 const SignInInputWrapper = styled.div`
@@ -68,7 +71,6 @@ const ErrorSpan = styled.span`
 const SignInMoreAction = styled.div`
   display: flex;
   margin: 10px auto;
-  color: #fff;
   a {
     margin: 0 15px;
     text-underline-position: under;
@@ -82,7 +84,7 @@ const SocialLoginWrapper = styled.div`
   justify-content: center;
   border-top: 1px solid;
   border-radius: 4px;
-  border-color: white;
+  border-color: ${(props) => props.theme.textColor};
   width: 50%;
 `;
 
@@ -92,6 +94,7 @@ const SocialLoginTitle = styled.div`
   margin-top: 10px;
   margin-bottom: 2px;
   font-size: 0.75rem;
+  color: ${(props) => props.theme.textColor};
 `;
 
 const SocialLoginBtn = styled.div`
