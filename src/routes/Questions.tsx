@@ -15,7 +15,7 @@ const Title = styled.div`
 const PostContainer = styled.div`
   margin: 0 auto;
   max-width: 800px;
-  min-height: 600px;
+  min-height: 630px;
   display: flex;
   flex-direction: column;
   border-radius: 5px;
@@ -26,6 +26,28 @@ const PostContainer = styled.div`
   a:hover,
   a:active {
     text-decoration: none;
+  }
+  thead {
+    tr {
+      th:nth-child(1) {
+        width: 8%;
+      }
+      th:nth-child(2) {
+        width: 12%;
+      }
+      th:nth-child(3) {
+        width: 40%;
+      }
+      th:nth-child(4) {
+        width: 20%;
+      }
+      th:nth-child(5) {
+        width: 10%;
+      }
+      th:nth-child(6) {
+        width: 10%;
+      }
+    }
   }
 `;
 
