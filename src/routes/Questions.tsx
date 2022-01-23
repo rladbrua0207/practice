@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useTable } from "react-table";
 import styled from "styled-components";
@@ -15,7 +15,7 @@ const Title = styled.div`
 const PostContainer = styled.div`
   margin: 0 auto;
   max-width: 800px;
-  max-height: 600px;
+  min-height: 600px;
   display: flex;
   flex-direction: column;
   border-radius: 5px;
@@ -72,20 +72,78 @@ const PostTable = styled.table`
     border-bottom: solid 2px #e8e8e8;
   }
 `;
+const columnData = [
+  {
+    accessor: `no`,
+    Header: "번호",
+  },
+  {
+    accessor: `category`,
+    Header: "카테고리",
+  },
+  {
+    accessor: `title`,
+    Header: "제목",
+  },
+  {
+    accessor: `name`,
+    Header: "글쓴이",
+  },
+  {
+    accessor: `date`,
+    Header: "등록일",
+  },
+  {
+    accessor: `views`,
+    Header: "조회수",
+  },
+];
 
 function Questions() {
   const posts: IPosts[] = JSON.parse(localStorage.getItem("posts") as string);
 
   const questionArr = posts.filter((post) => post.category === "question");
 
-  const column = React.useMemo;
+  for (let i = 0; i < questionArr.length; i++) {
+    questionArr[i].no = i + 1;
+  }
+
+  const columns = useMemo(() => columnData, []);
+
+  const data = useMemo(() => [...questionArr], []);
+
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable({ columns, data } as any);
 
   return (
     <div>
       <Title>질문</Title>
       <PostContainer>
-        <PostTable>
+        <PostTable {...getTableProps()}>
           <thead>
+            {headerGroups.map((header) => (
+              <tr {...header.getHeaderGroupProps()}>
+                {header.headers.map((col) => (
+                  <th {...col.getHeaderProps()}>{col.render("Header")}</th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {rows.map((row, i) => {
+              prepareRow(row);
+              return (
+                <tr {...row.getRowProps()}>
+                  {row.cells.map((cell) => {
+                    return (
+                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+          {/* <thead>
             <tr>
               <th id="no">번호</th>
               <th id="category">카테고리</th>
@@ -106,7 +164,7 @@ function Questions() {
                 <td>{post.views}</td>
               </tr>
             ))}
-          </tbody>
+          </tbody> */}
         </PostTable>
         <WriteBox>
           <Link id="write" to="/write">

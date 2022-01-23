@@ -1,4 +1,5 @@
 export interface IPosts {
+  no: number;
   category: string;
   title: string;
   content: string;

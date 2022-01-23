@@ -1,4 +1,6 @@
+import { useMemo } from "react";
 import { Link } from "react-router-dom";
+import { useTable } from "react-table";
 import styled from "styled-components";
 import { IPosts } from "../Interface";
 
@@ -13,7 +15,7 @@ const Title = styled.div`
 const PostContainer = styled.div`
   margin: 0 auto;
   max-width: 800px;
-  max-height: 600px;
+  min-height: 600px;
   display: flex;
   flex-direction: column;
   border-radius: 5px;
@@ -71,36 +73,75 @@ const PostTable = styled.table`
   }
 `;
 
+const columnData = [
+  {
+    accessor: `no`,
+    Header: "번호",
+  },
+  {
+    accessor: `category`,
+    Header: "카테고리",
+  },
+  {
+    accessor: `title`,
+    Header: "제목",
+  },
+  {
+    accessor: `name`,
+    Header: "글쓴이",
+  },
+  {
+    accessor: `date`,
+    Header: "등록일",
+  },
+  {
+    accessor: `views`,
+    Header: "조회수",
+  },
+];
+
 function Notice() {
   const posts: IPosts[] = JSON.parse(localStorage.getItem("posts") as string);
 
   const noticesArr = posts.filter((post) => post.category === "notice");
+  for (let i = 0; i < noticesArr.length; i++) {
+    noticesArr[i].no = i + 1;
+  }
+
+  const columns = useMemo(() => columnData, []);
+
+  const data = useMemo(() => [...noticesArr], []);
+
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable({ columns, data } as any);
+
   return (
     <div>
       <Title>공지사항</Title>
       <PostContainer>
         <PostTable>
           <thead>
-            <tr>
-              <th id="no">번호</th>
-              <th id="category">카테고리</th>
-              <th id="title">제목</th>
-              <th id="name">글쓴이</th>
-              <th id="date">등록일</th>
-              <th id="views">조회수</th>
-            </tr>
-          </thead>
-          <tbody>
-            {noticesArr.map((post, index) => (
-              <tr key={index}>
-                <td>{index + 1}</td>
-                <td>{post.category}</td>
-                <td>{post.title}</td>
-                <td>{post.name}</td>
-                <td>{post.date}</td>
-                <td>{post.views}</td>
+            {headerGroups.map((header) => (
+              <tr {...header.getHeaderGroupProps()}>
+                {header.headers.map((col) => (
+                  <th {...col.getHeaderProps()}>{col.render("Header")}</th>
+                ))}
               </tr>
             ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {rows.map((row, i) => {
+              prepareRow(row);
+              return (
+                <tr {...row.getRowProps()}>
+                  {row.cells.map((cell) => {
+                    return (
+                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
           </tbody>
         </PostTable>
         <WriteBox>
