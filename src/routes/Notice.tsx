@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { IPosts } from "../Interface";
 
 const Title = styled.div`
   display: flex;
@@ -71,6 +72,9 @@ const PostTable = styled.table`
 `;
 
 function Notice() {
+  const posts: IPosts[] = JSON.parse(localStorage.getItem("posts") as string);
+
+  const noticesArr = posts.filter((post) => post.category === "notice");
   return (
     <div>
       <Title>공지사항</Title>
@@ -87,30 +91,16 @@ function Notice() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>2</td>
-              <td>3</td>
-              <td>4</td>
-              <td>5</td>
-              <td>6</td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>2</td>
-              <td>3</td>
-              <td>4</td>
-              <td>5</td>
-              <td>6</td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>2</td>
-              <td>3</td>
-              <td>4</td>
-              <td>5</td>
-              <td>6</td>
-            </tr>
+            {noticesArr.map((post, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>{post.category}</td>
+                <td>{post.title}</td>
+                <td>{post.name}</td>
+                <td>{post.date}</td>
+                <td>{post.views}</td>
+              </tr>
+            ))}
           </tbody>
         </PostTable>
         <WriteBox>

@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import ReactModal from "react-modal";
 import styled from "styled-components";
+import { IPosts } from "../Interface";
 
 const WriteForm = styled.form`
   margin: 50px auto;
@@ -151,11 +152,29 @@ const ModalContent = styled.div`
 `;
 
 function Write() {
-  const { register, watch, handleSubmit, setError, formState } = useForm();
-  console.log(formState.errors);
+  let posts: string[] = [];
+  const { register, handleSubmit } = useForm();
 
   const onValid = (data: any) => {
     //인증에 성공했을 때 코드
+    let now = new Date();
+    console.log(data);
+    const currentTime = {
+      year: now.getFullYear(),
+      month: String(now.getMonth() + 1).padStart(2, "0"),
+      date: String(now.getDate()).padStart(2, "0"),
+      hour: String(now.getHours()).padStart(2, "0"),
+      minute: String(now.getMinutes()).padStart(2, "0"),
+    };
+
+    data.date = `${currentTime.year}.${currentTime.month}.${currentTime.date} ${currentTime.hour}:${currentTime.month}`;
+    data.name = ``; //로그인 한 사용자 이름
+    data.views = 0; //조회수 백엔드랑 함께 구현
+    posts = localStorage.getItem("posts")
+      ? JSON.parse(localStorage.getItem("posts") as string)
+      : [];
+    posts.push(data);
+    localStorage.setItem("posts", JSON.stringify([...posts]));
   };
 
   const [errorIsOpen, setErrorIsOpen] = useState(false);
@@ -163,25 +182,24 @@ function Write() {
   let errorArr: string[] = [];
   const oninvalid = (data: any) => {
     if (data.content) errorArr.push(data.content.message);
-    if (data.select) errorArr.push(data.select.message);
+    if (data.category) errorArr.push(data.category.message);
     if (data.title) errorArr.push(data.title.message);
     setErrors([...errorArr]);
     errorArr = [];
     setErrorIsOpen(true);
   };
 
-  console.log(watch());
   return (
     <WriteForm onSubmit={handleSubmit(onValid, oninvalid)}>
       <WriteInputWrapper>
         <WriteSelect
-          {...register("select", {
+          {...register("category", {
             required: "카테고리를 선택 해 주세요",
           })}
         >
           <option value="">카테고리</option>
-          <option value="공지사항">공지사항</option>
-          <option value="질문">질문</option>
+          <option value="notice">공지사항</option>
+          <option value="question">질문</option>
         </WriteSelect>
         <WriteLabel htmlFor="title">제목</WriteLabel>
         <WriteInput

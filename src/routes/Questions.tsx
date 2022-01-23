@@ -1,5 +1,120 @@
-function Questions() {
-  return <></>;
-}
+import React from "react";
+import { Link } from "react-router-dom";
+import { useTable } from "react-table";
+import styled from "styled-components";
+import { IPosts } from "../Interface";
 
+const Title = styled.div`
+  display: flex;
+  font-size: 2rem;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+`;
+
+const PostContainer = styled.div`
+  margin: 0 auto;
+  max-width: 800px;
+  max-height: 600px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  border: solid 1px #8d8d8d;
+  padding: 10px;
+  a {
+  }
+  a:hover,
+  a:active {
+    text-decoration: none;
+  }
+`;
+
+const WriteBox = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  #write {
+    background-color: #e2e2e2;
+    margin: 10px 15px 0 0;
+    padding: 7px;
+    border-radius: 5px;
+    color: #000;
+  }
+`;
+
+const PostTable = styled.table`
+  margin: 0 10px;
+  text-align: center;
+  #no {
+    width: 35px;
+  }
+  #category {
+    width: 90px;
+  }
+  #name {
+    width: 60px;
+  }
+  #title {
+    width: 280px;
+  }
+  #date {
+    width: 150px;
+  }
+  #views {
+    width: 70px;
+  }
+  tbody {
+  }
+  th,
+  td {
+    height: 25px;
+    padding: 10px;
+    vertical-align: middle;
+    border-bottom: solid 2px #e8e8e8;
+  }
+`;
+
+function Questions() {
+  const posts: IPosts[] = JSON.parse(localStorage.getItem("posts") as string);
+
+  const questionArr = posts.filter((post) => post.category === "question");
+
+  const column = React.useMemo;
+
+  return (
+    <div>
+      <Title>질문</Title>
+      <PostContainer>
+        <PostTable>
+          <thead>
+            <tr>
+              <th id="no">번호</th>
+              <th id="category">카테고리</th>
+              <th id="title">제목</th>
+              <th id="name">글쓴이</th>
+              <th id="date">등록일</th>
+              <th id="views">조회수</th>
+            </tr>
+          </thead>
+          <tbody>
+            {questionArr.map((post, index) => (
+              <tr>
+                <td>{index + 1}</td>
+                <td>{post.category}</td>
+                <td>{post.title}</td>
+                <td>{post.name}</td>
+                <td>{post.date}</td>
+                <td>{post.views}</td>
+              </tr>
+            ))}
+          </tbody>
+        </PostTable>
+        <WriteBox>
+          <Link id="write" to="/write">
+            글 작성
+          </Link>
+        </WriteBox>
+      </PostContainer>
+    </div>
+  );
+}
 export default Questions;
