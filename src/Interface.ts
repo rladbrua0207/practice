@@ -7,4 +7,5 @@ export interface IPosts {
   name: string;
   views: number;
   date: string;
+  postId: string;
 }

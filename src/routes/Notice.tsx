@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTable } from "react-table";
 import styled from "styled-components";
 import { IPosts } from "../Interface";
@@ -127,13 +127,14 @@ function Notice() {
   for (let i = 0; i < noticesArr.length; i++) {
     noticesArr[i].no = i + 1;
   }
+  const navigate = useNavigate();
 
-  const columns = useMemo(() => columnData, []);
+  const columns: any = useMemo(() => columnData, []);
 
   const data = useMemo(() => [...noticesArr], []);
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data } as any);
+    useTable({ columns, data });
 
   return (
     <div>
@@ -153,7 +154,10 @@ function Notice() {
             {rows.map((row, i) => {
               prepareRow(row);
               return (
-                <tr {...row.getRowProps()}>
+                <tr
+                  onClick={() => navigate(`/write/${row.original.postId}`)}
+                  {...row.getRowProps()}
+                >
                   {row.cells.map((cell) => {
                     return (
                       <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
