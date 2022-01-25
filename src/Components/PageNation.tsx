@@ -5,9 +5,9 @@ import { postArrAtom } from "../atoms";
 import { IPosts } from "../Interface";
 
 interface IBoardPage {
-  postsCount: number;
-  per: number;
-  arr: IPosts[];
+  totalPosts: number;
+  postsPerPage: number;
+  paginate: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const Paging = styled.div`
@@ -38,25 +38,17 @@ const createArr = (n: number) => {
   return iArr;
 };
 
-function BoardPage({ postsCount, per, arr }: IBoardPage) {
+function PageNation({ totalPosts, postsPerPage, paginate }: IBoardPage) {
   const [currPage, setCurrPage] = useState(1);
 
   const pageNumArr = [];
-  for (let i = 1; i <= Math.ceil(postsCount / per); i++) {
+  for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {
     pageNumArr.push(i);
   }
 
-  const total = Math.ceil(postsCount / per);
+  const total = Math.ceil(totalPosts / postsPerPage);
 
   const iArr = createArr(Number(total));
-
-  const [postArr, setPostArr] = useRecoilState(postArrAtom);
-  useEffect(() => {
-    (async () => {})();
-    setPostArr(arr.slice((currPage - 1) * Number(per), Number(per) * currPage));
-    console.log(postArr);
-  }, [currPage]);
-  //10개씩 자른 posts
 
   const updateCurrPage = (n: number) => {
     setCurrPage(n);
@@ -67,27 +59,12 @@ function BoardPage({ postsCount, per, arr }: IBoardPage) {
   };
 
   const lastPage = () => {
-    setCurrPage(postsCount / per);
+    setCurrPage(totalPosts / postsPerPage);
   };
-
-  //   const prevPage = () => {
-  //     if (currPage <= 1) return;
-  //     if (currPage - 1 <= per * blockNum) {
-  //     }
-  //     setCurrPage((n) => n - 1);
-  //   };
-
-  //   const nextPage = () => {
-  //     if (currPage >= postsCount / per) return;
-  //     if (per * Number(blockNum + 1) < Number(currPage + 1)) {
-  //     }
-  //     setCurrPage((n) => n + 1);
-  //   };
 
   return (
     <Paging>
       <PageBtn onClick={firstPage}>&lt;&lt;</PageBtn>
-      {/* <PageBtn onClick={prevPage}>&lt;</PageBtn> */}
       <>
         {pageNumArr.map((n) => (
           <PageBtn key={n} onClick={() => updateCurrPage(n)}>
@@ -95,10 +72,9 @@ function BoardPage({ postsCount, per, arr }: IBoardPage) {
           </PageBtn>
         ))}
       </>
-      {/* <PageBtn onClick={nextPage}>&gt;</PageBtn> */}
       <PageBtn onClick={lastPage}>&gt;&gt;</PageBtn>
     </Paging>
   );
 }
 
-export default BoardPage;
+export default PageNation;
