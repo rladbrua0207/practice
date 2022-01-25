@@ -54,6 +54,9 @@ const PostContainer = styled.div`
 const WriteBox = styled.div`
   display: flex;
   justify-content: flex-end;
+  position: sticky;
+  left: 800px;
+  top: 900px;
   #write {
     background-color: #e2e2e2;
     margin: 10px 15px 0 0;
@@ -124,8 +127,11 @@ const columnData = [
 function Questions() {
   const posts: IPosts[] = JSON.parse(localStorage.getItem("posts") as string);
 
-  const questionArr = posts.filter((post) => post.category === "question");
+  let questionArr: IPosts[] = [];
 
+  if (posts?.filter((post) => post.category === "notice")) {
+    questionArr = posts.filter((post) => post.category === "question");
+  }
   for (let i = 0; i < questionArr.length; i++) {
     questionArr[i].no = i + 1;
   }

@@ -1,7 +1,10 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTable } from "react-table";
+import { RecoilState, useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { postArrAtom } from "../atoms";
+import BoardPage from "../Components/BoardPage";
 import { IPosts } from "../Interface";
 
 const Title = styled.div`
@@ -32,6 +35,9 @@ const PostContainer = styled.div`
 const WriteBox = styled.div`
   display: flex;
   justify-content: flex-end;
+  position: sticky;
+  left: 800px;
+  top: 900px;
   #write {
     background-color: #e2e2e2;
     margin: 10px 15px 0 0;
@@ -122,58 +128,80 @@ const columnData = [
 
 function Notice() {
   const posts: IPosts[] = JSON.parse(localStorage.getItem("posts") as string);
-
-  const noticesArr = posts.filter((post) => post.category === "notice");
-  for (let i = 0; i < noticesArr.length; i++) {
-    noticesArr[i].no = i + 1;
+  let noticeArr: IPosts[] = [];
+  const [isLoading, setIsLoading] = useState(true);
+  if (posts?.filter((post) => post.category === "notice")) {
+    noticeArr = posts?.filter((post) => post.category === "notice");
   }
+  for (let i = 0; i < noticeArr?.length; i++) {
+    noticeArr[i].no = i + 1;
+  }
+  const [postArr, setPostArr] = useRecoilState(postArrAtom);
   const navigate = useNavigate();
 
   const columns: any = useMemo(() => columnData, []);
+  useEffect(() => {
+    (() => {})();
+    setPostArr(noticeArr.slice(0, 10));
+    setIsLoading(false);
 
-  const data = useMemo(() => [...noticesArr], []);
+    console.log("Notice", postArr);
+  }, []);
 
+  const data = useMemo(() => [...postArr], []);
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data });
-
   return (
     <div>
-      <Title>공지사항</Title>
-      <PostContainer>
-        <PostTable>
-          <thead>
-            {headerGroups.map((header, i) => (
-              <tr {...header.getHeaderGroupProps()}>
-                {header.headers.map((col) => (
-                  <th {...col.getHeaderProps()}>{col.render("Header")}</th>
+      {isLoading ? (
+        <Title>Loading...</Title>
+      ) : (
+        <div>
+          <Title>공지사항</Title>
+          <PostContainer>
+            <PostTable>
+              <thead>
+                {headerGroups.map((header, i) => (
+                  <tr {...header.getHeaderGroupProps()}>
+                    {header.headers.map((col) => (
+                      <th {...col.getHeaderProps()}>{col.render("Header")}</th>
+                    ))}
+                  </tr>
                 ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {rows.map((row, i) => {
-              prepareRow(row);
-              return (
-                <tr
-                  onClick={() => navigate(`/write/${row.original.postId}`)}
-                  {...row.getRowProps()}
-                >
-                  {row.cells.map((cell) => {
-                    return (
-                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                    );
-                  })}
-                </tr>
-              );
-            })}
-          </tbody>
-        </PostTable>
-        <WriteBox>
-          <Link id="write" to="/write">
-            글 작성
-          </Link>
-        </WriteBox>
-      </PostContainer>
+              </thead>
+              <tbody {...getTableBodyProps()}>
+                {rows.map((row, i) => {
+                  prepareRow(row);
+                  return (
+                    <tr
+                      onClick={() => navigate(`/write/${row.original.postId}`)}
+                      {...row.getRowProps()}
+                    >
+                      {row.cells.map((cell) => {
+                        return (
+                          <td {...cell.getCellProps()}>
+                            {cell.render("Cell")}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </PostTable>
+            <BoardPage
+              postsCount={noticeArr.length}
+              per={10}
+              arr={noticeArr}
+            ></BoardPage>
+            <WriteBox>
+              <Link id="write" to="/write">
+                글 작성
+              </Link>
+            </WriteBox>
+          </PostContainer>
+        </div>
+      )}
     </div>
   );
 }
