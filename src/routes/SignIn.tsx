@@ -3,8 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import kakaoLoginImg from "../images/kakaolink_btn_small.png";
 import googleLoginImg from "../images/google_logo_2_littledeep.png";
+import KakaoLogin from "../Components/socialLogin/KakaoLogin";
 
 const SignInForm = styled.form`
   display: flex;
@@ -104,6 +104,9 @@ const SocialLoginBtn = styled.div`
   align-items: center;
   justify-content: center;
   margin: 0 1px;
+  &:hover {
+    cursor: pointer;
+  }
   #facebook {
     font-size: 3rem;
     color: #1673e8;
@@ -176,9 +179,7 @@ function SignIn() {
       <SocialLoginTitle>간편 로그인</SocialLoginTitle>
       <SocialLoginWrapper>
         <SocialLoginBtn>
-          <Link to={"/"}>
-            <img src={kakaoLoginImg} id="kakao"></img>
-          </Link>
+          <KakaoLogin></KakaoLogin>
         </SocialLoginBtn>
         <SocialLoginBtn>
           <Link to={"/"}>
