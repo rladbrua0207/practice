@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { postArrAtom } from "../atoms";
@@ -11,6 +12,10 @@ interface IBoardPage {
 }
 
 const Paging = styled.div`
+  display: flex;
+  position: sticky;
+  top: 795px;
+  justify-content: space-between;
   margin-top: 12px;
   text-align: center;
 `;
@@ -28,51 +33,99 @@ const PageBtn = styled.button`
   position: relative;
 `;
 
-const On = styled.div`
-  background-color: pink;
+const PageBox = styled.div`
+  margin-left: 70px;
+`;
+
+const WriteBox = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  position: sticky;
+  left: 800px;
+  top: 1000px;
+  #write {
+    background-color: #e2e2e2;
+    margin-right: 15px;
+    padding: 7px;
+    border-radius: 5px;
+    color: #000;
+  }
 `;
 
 const createArr = (n: number) => {
-  const iArr = [];
-  for (let i = 0; i < n; i++) iArr[i] = i + 1;
-  return iArr;
-};
-
-function PageNation({ totalPosts, postsPerPage, paginate }: IBoardPage) {
-  const [currPage, setCurrPage] = useState(1);
-
-  const pageNumArr = [];
-  for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {
-    pageNumArr.push(i);
+  const arr = new Array(n);
+  for (let i = 0; i < n; i++) {
+    arr[i] = i + 1;
   }
+  return arr;
+};
+let currPage = 1;
+function PageNation({ totalPosts, postsPerPage, paginate }: IBoardPage) {
+  const maxPage = totalPosts / postsPerPage;
 
-  const total = Math.ceil(totalPosts / postsPerPage);
+  const [pageBlock, setPageBlock] = useState(0);
+  const pageNumInterval = 5;
 
-  const iArr = createArr(Number(total));
+  const arr = createArr(Number(maxPage));
+  const v = Number(pageBlock * pageNumInterval);
+  let pageNumArr = arr.slice(v, pageNumInterval + v);
 
   const updateCurrPage = (n: number) => {
-    setCurrPage(n);
+    currPage = n;
+    paginate(currPage);
+  };
+
+  const nextPage = () => {
+    if (currPage >= maxPage) return;
+    currPage += 1;
+    if (currPage > Math.ceil((pageBlock + 1) * pageNumInterval)) {
+      setPageBlock((n) => n + 1);
+    }
+    paginate(currPage);
+  };
+
+  const prevPage = () => {
+    if (currPage === 1) return;
+    currPage -= 1;
+    if (currPage <= pageNumInterval * pageBlock) {
+      setPageBlock((n) => n - 1);
+    }
+    paginate(currPage);
   };
 
   const firstPage = () => {
-    setCurrPage(1);
+    currPage = 1;
+    setPageBlock(0);
+    paginate(currPage);
   };
 
   const lastPage = () => {
-    setCurrPage(totalPosts / postsPerPage);
+    currPage = totalPosts / postsPerPage;
+    setPageBlock(Math.ceil(maxPage / pageNumInterval - 1));
+    paginate(currPage);
   };
 
   return (
     <Paging>
-      <PageBtn onClick={firstPage}>&lt;&lt;</PageBtn>
-      <>
-        {pageNumArr.map((n) => (
-          <PageBtn key={n} onClick={() => updateCurrPage(n)}>
-            {n}
-          </PageBtn>
-        ))}
-      </>
-      <PageBtn onClick={lastPage}>&gt;&gt;</PageBtn>
+      <div></div>
+      <PageBox>
+        <PageBtn onClick={firstPage}>&lt;&lt;</PageBtn>
+        <PageBtn onClick={prevPage}>&lt;</PageBtn>
+        <>
+          {pageNumArr.map((n) => (
+            <PageBtn key={n} onClick={() => updateCurrPage(n)}>
+              {n}
+            </PageBtn>
+          ))}
+        </>
+        <PageBtn onClick={nextPage}>&gt;</PageBtn>
+        <PageBtn onClick={lastPage}>&gt;&gt;</PageBtn>
+      </PageBox>
+      <WriteBox>
+        <Link id="write" to="/write">
+          글 작성
+        </Link>
+      </WriteBox>
     </Paging>
   );
 }
