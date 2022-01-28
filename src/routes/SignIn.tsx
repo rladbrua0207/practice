@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import googleLoginImg from "../images/google_logo_2_littledeep.png";
 import KakaoLogin from "../Components/socialLogin/KakaoLogin";
+import GithubLogin from "../Components/socialLogin/GithubLogin";
 
 const SignInForm = styled.form`
   display: flex;
@@ -182,9 +183,7 @@ function SignIn() {
           <KakaoLogin></KakaoLogin>
         </SocialLoginBtn>
         <SocialLoginBtn>
-          <Link to={"/"}>
-            <FontAwesomeIcon icon={faGithub} id="github" />
-          </Link>
+          <GithubLogin />
         </SocialLoginBtn>
         <SocialLoginBtn>
           <Link to={"/"}>

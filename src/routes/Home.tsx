@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import styled from "styled-components";
 import NavBar from "../Components/NavBar";
+import GithubCallback from "../Components/socialLogin/GithubCallback";
 import Notice from "./Notice";
 import Post from "./Post";
 import Questions from "./Questions";
@@ -19,6 +20,7 @@ function Home() {
         <Route path="/signup" element={<SignUp />}></Route>
         <Route path="/write" element={<Write />}></Route>
         <Route path="/write/:id" element={<Post />}></Route>
+        <Route path="/githubcallback" element={<GithubCallback />}></Route>
       </Routes>
     </>
   );
