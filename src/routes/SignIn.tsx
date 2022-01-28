@@ -3,9 +3,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import googleLoginImg from "../images/google_logo_2_littledeep.png";
 import KakaoLogin from "../Components/socialLogin/KakaoLogin";
 import GithubLogin from "../Components/socialLogin/GithubLogin";
+import GoogleLogin from "../Components/socialLogin/GoogleLogin";
 
 const SignInForm = styled.form`
   display: flex;
@@ -119,7 +119,6 @@ const SocialLoginBtn = styled.div`
     font-size: 1rem;
     border-radius: 4px;
     padding: 5px;
-    margin-top: 3px;
   }
   #kakao {
     width: 42px;
@@ -186,9 +185,7 @@ function SignIn() {
           <GithubLogin />
         </SocialLoginBtn>
         <SocialLoginBtn>
-          <Link to={"/"}>
-            <img src={googleLoginImg} id="google"></img>
-          </Link>
+          <GoogleLogin />
         </SocialLoginBtn>
         <SocialLoginBtn>
           <Link to={"/"}>

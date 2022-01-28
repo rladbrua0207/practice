@@ -10,7 +10,6 @@ const config: any = {
   scope: "read:user user:email",
 };
 const params = new URLSearchParams(config).toString();
-console.log(params);
 const finalUrl = `${baseUrl}?${params}`;
 function GithubLogin() {
   return (
