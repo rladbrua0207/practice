@@ -15,8 +15,8 @@ function GithubCallback() {
         ignoreQueryPrefix: true, //?없애주는거
       });
       const config: any = {
-        client_id: process.env.REACT_APP_GITHUB_CLIENT_ID,
-        client_secret: process.env.REACT_APP_GITHUB_SECRET,
+        client_id: process.env.REACT_APP_GITHUB_CLIENT_ID || "",
+        client_secret: process.env.REACT_APP_GITHUB_SECRET || "",
         code,
       };
       const baseUrl = "https://github.com/login/oauth/access_token";

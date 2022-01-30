@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const baseUrl = "http://github.com/login/oauth/authorize";
 const config: any = {
-  client_id: process.env.REACT_APP_GITHUB_CLIENT_ID,
+  client_id: process.env.REACT_APP_GITHUB_CLIENT_ID || "",
   allow_signup: false,
   scope: "read:user user:email",
 };

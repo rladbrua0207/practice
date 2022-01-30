@@ -53,7 +53,7 @@ const WriteBox = styled.div`
 `;
 
 const createArr = (n: number) => {
-  const arr = new Array(n);
+  const arr = [];
   for (let i = 0; i < n; i++) {
     arr[i] = i + 1;
   }
