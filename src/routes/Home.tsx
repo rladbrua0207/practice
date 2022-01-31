@@ -19,7 +19,7 @@ function Home() {
         <Route path="/signin" element={<SignIn />}></Route>
         <Route path="/signup" element={<SignUp />}></Route>
         <Route path="/write" element={<Write />}></Route>
-        <Route path="/write/:id" element={<Post />}></Route>
+        <Route path="/post/:id" element={<Post />}></Route>
         <Route path="/githubcallback" element={<GithubCallback />}></Route>
       </Routes>
     </>

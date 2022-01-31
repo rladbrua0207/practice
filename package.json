@@ -20,6 +20,7 @@
     "@types/react-table": "^7.7.9",
     "@types/styled-components": "^5.1.20",
     "axios": "^0.25.0",
+    "dotenv": "^14.3.2",
     "qs": "^6.10.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -27,6 +28,7 @@
     "react-hook-form": "^7.24.1",
     "react-modal": "^3.14.4",
     "react-paginate": "^8.1.0",
+    "react-query": "^3.34.12",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
     "react-table": "^7.7.0",
@@ -61,6 +63,5 @@
   },
   "devDependencies": {
     "@types/react-modal": "^3.13.1"
-  },
-  "proxy": "https://github.com"
+  }
 }

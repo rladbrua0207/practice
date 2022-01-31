@@ -72,33 +72,49 @@ function Posts({ arr: postArr, isLoading }: IPostArr) {
 
   return (
     <div>
-      <div>
-        <PostTable>
-          <thead>
-            <tr>
-              <th id="no">번호</th>
-              <th id="category">카테고리</th>
-              <th id="title">제목</th>
-              <th id="name">글쓴이</th>
-              <th id="date">등록일</th>
-              <th id="views">조회수</th>
+      <PostTable>
+        <thead>
+          <tr>
+            <th id="no">번호</th>
+            <th id="category">카테고리</th>
+            <th id="title">제목</th>
+            <th id="name">글쓴이</th>
+            <th id="date">등록일</th>
+            <th id="views">조회수</th>
+          </tr>
+        </thead>
+        <tbody>
+          {postArr.map((post, index) => (
+            <tr
+              key={index}
+              onClick={() =>
+                navigate(`/post/${post.postId}`, {
+                  state: {
+                    no: post.no,
+                    category: post.category,
+                    title: post.title,
+                    name: post.name,
+                    date: post.date,
+                    views: post.views,
+                    id: post.postId,
+                    content: post.content,
+                    file: post.file,
+                  },
+                })
+              }
+            >
+              <td>{post.no}</td>
+              <td>{post.category}</td>
+              <td>{post.title}</td>
+              <td>{post.name}</td>
+              <td>{post.date}</td>
+              <td>{post.views}</td>
             </tr>
-          </thead>
-          <tbody>
-            {postArr.map((post, index) => (
-              <tr key={index} onClick={() => navigate(`/write/${post.postId}`)}>
-                <td>{post.no}</td>
-                <td>{post.category}</td>
-                <td>{post.title}</td>
-                <td>{post.name}</td>
-                <td>{post.date}</td>
-                <td>{post.views}</td>
-              </tr>
-            ))}
-          </tbody>
-        </PostTable>
+          ))}
+        </tbody>
+      </PostTable>
 
-        {/* <PostTable {...getTableProps()}>
+      {/* <PostTable {...getTableProps()}>
               <thead>
                 {headerGroups.map((header, i) => (
                   <tr {...header.getHeaderGroupProps()}>
@@ -128,7 +144,6 @@ function Posts({ arr: postArr, isLoading }: IPostArr) {
                 })}
               </tbody>
             </PostTable> */}
-      </div>
     </div>
   );
 }
