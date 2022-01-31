@@ -13,17 +13,16 @@ interface IBoardPage {
 
 const Paging = styled.div`
   display: flex;
-  position: sticky;
-  top: 795px;
-  justify-content: space-between;
+  justify-content: space-around;
   margin-top: 12px;
   text-align: center;
+  margin-right: 40px;
 `;
 
 const PageBtn = styled.button`
+  background: none;
   height: 34px;
-  border: 1px solid #d5d5d5;
-  border-radius: 6px;
+  border: none;
   padding: 0 12px;
   font-size: 14px;
   font-weight: 500;
@@ -31,25 +30,14 @@ const PageBtn = styled.button`
   cursor: pointer;
   box-sizing: border-box;
   position: relative;
+  &.selected {
+    background: #e2e2e2;
+    border-radius: 9999px;
+  }
 `;
 
 const PageBox = styled.div`
   margin-left: 70px;
-`;
-
-const WriteBox = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  position: sticky;
-  left: 800px;
-  top: 1000px;
-  #write {
-    background-color: #e2e2e2;
-    margin-right: 15px;
-    padding: 7px;
-    border-radius: 5px;
-    color: #000;
-  }
 `;
 
 const createArr = (n: number) => {
@@ -70,9 +58,19 @@ function PageNation({ totalPosts, postsPerPage, paginate }: IBoardPage) {
   const v = Number(pageBlock * pageNumInterval);
   let pageNumArr = arr.slice(v, pageNumInterval + v);
 
+  const selectedPage = (n: string) => {
+    pageNumArr.map((n) => {
+      const id = document.getElementById(`${n}`);
+      id?.classList.remove("selected");
+    });
+    const id = document.getElementById(`${n}`);
+    id?.classList.add("selected");
+  };
+
   const updateCurrPage = (n: number) => {
     currPage = n;
     paginate(currPage);
+    selectedPage(`${n}`);
   };
 
   const nextPage = () => {
@@ -82,6 +80,7 @@ function PageNation({ totalPosts, postsPerPage, paginate }: IBoardPage) {
       setPageBlock((n) => n + 1);
     }
     paginate(currPage);
+    selectedPage(`${currPage}`);
   };
 
   const prevPage = () => {
@@ -91,29 +90,32 @@ function PageNation({ totalPosts, postsPerPage, paginate }: IBoardPage) {
       setPageBlock((n) => n - 1);
     }
     paginate(currPage);
+    selectedPage(`${currPage}`);
   };
 
   const firstPage = () => {
     currPage = 1;
     setPageBlock(0);
     paginate(currPage);
+    selectedPage(`${currPage}`);
   };
 
   const lastPage = () => {
-    currPage = totalPosts / postsPerPage;
+    currPage = Math.ceil(maxPage);
     setPageBlock(Math.ceil(maxPage / pageNumInterval - 1));
     paginate(currPage);
+    selectedPage(`${currPage}`);
+    console.log(currPage);
   };
 
   return (
     <Paging>
-      <div></div>
       <PageBox>
         <PageBtn onClick={firstPage}>&lt;&lt;</PageBtn>
         <PageBtn onClick={prevPage}>&lt;</PageBtn>
         <>
           {pageNumArr.map((n) => (
-            <PageBtn key={n} onClick={() => updateCurrPage(n)}>
+            <PageBtn key={n} id={`${n}`} onClick={() => updateCurrPage(n)}>
               {n}
             </PageBtn>
           ))}
@@ -121,11 +123,6 @@ function PageNation({ totalPosts, postsPerPage, paginate }: IBoardPage) {
         <PageBtn onClick={nextPage}>&gt;</PageBtn>
         <PageBtn onClick={lastPage}>&gt;&gt;</PageBtn>
       </PageBox>
-      <WriteBox>
-        <Link id="write" to="/write">
-          글 작성
-        </Link>
-      </WriteBox>
     </Paging>
   );
 }

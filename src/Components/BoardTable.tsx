@@ -10,25 +10,26 @@ import { RecoilState, useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { IPosts } from "../Interface";
 
-const PostTable = styled.table`
+const Table = styled.table`
   margin: 0 10px;
   text-align: center;
-  #no {
+
+  & #no {
   }
-  #category {
+  & #category {
     width: 90px;
   }
-  #name {
-    width: 60px;
+  & #name {
+    width: 70px;
   }
-  #title {
+  & #title {
     width: 280px;
   }
-  #date {
+  & #date {
     width: 150px;
   }
-  #views {
-    width: 70px;
+  & #views {
+    width: 60px;
   }
   thead {
     tr {
@@ -60,6 +61,13 @@ const PostTable = styled.table`
     vertical-align: middle;
     border-bottom: solid 2px #e8e8e8;
   }
+  td {
+    cursor: pointer;
+    max-width: 270px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 `;
 
 interface IPostArr {
@@ -67,12 +75,12 @@ interface IPostArr {
   arr: IPosts[];
 }
 
-function Posts({ arr: postArr, isLoading }: IPostArr) {
+function BoardTable({ arr: postArr, isLoading }: IPostArr) {
   const navigate = useNavigate();
 
   return (
     <div>
-      <PostTable>
+      <Table>
         <thead>
           <tr>
             <th id="no">번호</th>
@@ -112,7 +120,7 @@ function Posts({ arr: postArr, isLoading }: IPostArr) {
             </tr>
           ))}
         </tbody>
-      </PostTable>
+      </Table>
 
       {/* <PostTable {...getTableProps()}>
               <thead>
@@ -148,4 +156,4 @@ function Posts({ arr: postArr, isLoading }: IPostArr) {
   );
 }
 
-export default Posts;
+export default BoardTable;

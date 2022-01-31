@@ -146,7 +146,7 @@ const ModalContent = styled.div`
   line-height: 1.2rem;
 `;
 
-function Write() {
+function PostWrite() {
   let posts: string[] = [];
   const { register, handleSubmit } = useForm();
 
@@ -242,4 +242,4 @@ function Write() {
   );
 }
 
-export default Write;
+export default PostWrite;

@@ -48,11 +48,8 @@ function NavBar() {
     <>
       <NavContainer>
         <LeftNavBox>
-          <NavItem id="notice">
-            <Link to={`/notice`}>공지사항</Link>
-          </NavItem>
-          <NavItem id="questions">
-            <Link to={`/questions`}>질문</Link>
+          <NavItem id="board">
+            <Link to={`/board`}>게시판</Link>
           </NavItem>
         </LeftNavBox>
         <RightNavBox>

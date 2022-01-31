@@ -55,6 +55,8 @@ const PostContainer = styled.table`
   }
   #title {
     text-align: start;
+    font-size: 1.2rem;
+    padding: 5px;
     padding-left: 15px;
   }
 
