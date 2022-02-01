@@ -67,6 +67,12 @@ function PageNation({ totalPosts, postsPerPage, paginate }: IBoardPage) {
     id?.classList.add("selected");
   };
 
+  useEffect(() => {
+    (async () => {
+      selectedPage(`${currPage}`);
+    })();
+  }, [pageBlock]);
+
   const updateCurrPage = (n: number) => {
     currPage = n;
     paginate(currPage);
