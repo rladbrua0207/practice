@@ -104,7 +104,7 @@ function BoardTable({ arr: postArr, isLoading }: IPostArr) {
                     name: post.name,
                     date: post.date,
                     views: post.views,
-                    id: post.postId,
+                    postId: post.postId,
                     content: post.content,
                     file: post.file,
                   },
