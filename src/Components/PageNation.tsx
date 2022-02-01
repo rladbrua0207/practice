@@ -17,6 +17,7 @@ const Paging = styled.div`
   margin-top: 12px;
   text-align: center;
   margin-right: 40px;
+  height: 34px;
 `;
 
 const PageBtn = styled.button`
@@ -58,6 +59,21 @@ function PageNation({ totalPosts, postsPerPage, paginate }: IBoardPage) {
   const v = Number(pageBlock * pageNumInterval);
   let pageNumArr = arr.slice(v, pageNumInterval + v);
 
+  useEffect(() => {
+    (async () => {
+      selectedPage(`${currPage}`);
+    })();
+  }, [pageBlock]);
+
+  if (maxPage <= 1) {
+    return <Paging></Paging>;
+  }
+
+  const updateCurrPage = (n: number) => {
+    currPage = n;
+    paginate(currPage);
+    selectedPage(`${n}`);
+  };
   const selectedPage = (n: string) => {
     pageNumArr.map((n) => {
       const id = document.getElementById(`${n}`);
@@ -66,19 +82,6 @@ function PageNation({ totalPosts, postsPerPage, paginate }: IBoardPage) {
     const id = document.getElementById(`${n}`);
     id?.classList.add("selected");
   };
-
-  useEffect(() => {
-    (async () => {
-      selectedPage(`${currPage}`);
-    })();
-  }, [pageBlock]);
-
-  const updateCurrPage = (n: number) => {
-    currPage = n;
-    paginate(currPage);
-    selectedPage(`${n}`);
-  };
-
   const nextPage = () => {
     if (currPage >= maxPage) return;
     currPage += 1;
