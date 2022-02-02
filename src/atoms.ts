@@ -1,7 +1,7 @@
 import { atom } from "recoil";
-import { IPosts } from "./Interface";
+import { IPost } from "./Interface";
 
-export const postArrAtom = atom<IPosts[]>({
+export const postArrAtom = atom<IPost[]>({
   key: "postArr",
   default: [],
 });

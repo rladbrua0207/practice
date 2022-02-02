@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import PageNation from "../Components/PageNation";
-import { IPosts } from "../Interface";
+import { IPost } from "../Interface";
 import BoardTable from "../Components/BoardTable";
 import { Link } from "react-router-dom";
 
@@ -61,10 +61,8 @@ const WriteBox = styled.div`
 `;
 
 function Board() {
-  const allPosts: IPosts[] = JSON.parse(
-    localStorage.getItem("posts") as string
-  );
-  let postArr: IPosts[] = [];
+  const allPosts: IPost[] = JSON.parse(localStorage.getItem("posts") as string);
+  let postArr: IPost[] = [];
 
   const [category, setCategory] = useState("notice");
 
@@ -84,7 +82,7 @@ function Board() {
     }
   };
 
-  function currentPosts(tmp: IPosts[]) {
+  function currentPosts(tmp: IPost[]) {
     const currentPosts = tmp.slice(indexOfFirst, indexOfLast);
     console.log(indexOfLast);
     return currentPosts;
@@ -99,7 +97,7 @@ function Board() {
     })();
   }, [category]);
 
-  const [Posts, setPosts] = useState<IPosts[]>([...postArr]);
+  const [Posts, setPosts] = useState<IPost[]>([...postArr]);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(10);
   const indexOfLast = currentPage * postsPerPage;

@@ -1,8 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { IComments, IPosts } from "../Interface";
-import CommentList from "./CommentList";
+import { IPost } from "../../Interface";
 
 const Container = styled.div`
   min-width: 700px;
@@ -14,7 +13,7 @@ const Container = styled.div`
 `;
 
 const Textarea = styled.textarea`
-  width: 90%;
+  width: 95%;
   margin: 0 auto;
   resize: none;
   font-size: 1.2rem;
@@ -27,7 +26,7 @@ const Textarea = styled.textarea`
 `;
 
 const Owner = styled.div`
-  margin-left: 5%;
+  margin-left: 3%;
 `;
 
 const Form = styled.form`
@@ -52,22 +51,27 @@ const Btn = styled.button`
   margin-top: 5px;
   font-size: 1.1rem;
   padding: 5px;
-  margin-right: 4%;
+  margin-right: 1%;
+  background-color: ${(props) => props.theme.bgColor};
   &:hover {
     cursor: pointer;
   }
 `;
+export interface IIsAddComment {
+  isAddComment: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-function CommentWrite() {
+function CommentWrite({ isAddComment }: IIsAddComment) {
   const { register, handleSubmit, reset } = useForm();
 
-  const postState = useLocation().state as IPosts;
+  const postState = useLocation().state as IPost;
   console.log(postState);
 
   const onValid = (newComment: any) => {
     if (!window.confirm(`댓글을 작성하시겠습니까?`)) {
       return;
     }
+
     console.log(newComment);
     const now = new Date();
     const currentTime = {
@@ -88,6 +92,8 @@ function CommentWrite() {
 
     localStorage.setItem("comment", JSON.stringify([...comments, newComment]));
 
+    isAddComment(true);
+
     reset();
   };
 
@@ -106,7 +112,6 @@ function CommentWrite() {
           <Btn>등록</Btn>
         </BtnWrapper>
       </Form>
-      <CommentList></CommentList>
     </Container>
   );
 }

@@ -1,4 +1,4 @@
-export interface IPosts {
+export interface IPost {
   no?: number;
   category: string;
   title: string;
@@ -10,10 +10,18 @@ export interface IPosts {
   postId?: string;
 }
 
-export interface IComments {
-  comment: string;
+export interface IComment {
+  comment?: string;
   owner?: string;
   date?: string;
   commentId?: string;
   postId?: string;
+}
+
+export interface IReply {
+  reply: string;
+  replyId?: string;
+  date?: string;
+  commentId: string;
+  owner?: string;
 }

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import ReactModal from "react-modal";
 import styled from "styled-components";
-import { IPosts } from "../Interface";
+import { IPost } from "../Interface";
 
 const WriteForm = styled.form`
   margin: 50px auto;

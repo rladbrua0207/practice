@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import ReactModal from "react-modal";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { IPosts } from "../Interface";
+import { IPost } from "../Interface";
 
 const WriteForm = styled.form`
   margin: 50px auto;
@@ -151,7 +151,7 @@ const ModalContent = styled.div`
 function PostEdit() {
   let posts: string[] = [];
 
-  const state = useLocation().state as IPosts;
+  const state = useLocation().state as IPost;
   const { register, handleSubmit } = useForm({
     defaultValues: {
       title: state.title,

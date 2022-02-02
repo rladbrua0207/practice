@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { postArrAtom } from "../atoms";
-import { IPosts } from "../Interface";
+import { IPost } from "../Interface";
 
 interface IBoardPage {
   totalPosts: number;

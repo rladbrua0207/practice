@@ -8,7 +8,7 @@ import {
 } from "react-table";
 import { RecoilState, useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { IPosts } from "../Interface";
+import { IPost } from "../Interface";
 
 const Table = styled.table`
   margin: 0 10px;
@@ -72,7 +72,7 @@ const Table = styled.table`
 
 interface IPostArr {
   isLoading: boolean;
-  arr: IPosts[];
+  arr: IPost[];
 }
 
 function BoardTable({ arr: postArr, isLoading }: IPostArr) {

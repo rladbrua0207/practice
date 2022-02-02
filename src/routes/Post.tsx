@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import CommentWrite from "../Components/CommentWrite";
-import { IPosts } from "../Interface";
+import Comment from "../Components/Comment";
+import { IPost } from "../Interface";
 
 const TableContainer = styled.table`
   margin-top: 30px;
@@ -88,7 +88,7 @@ const PostBtn_etc = styled.button`
 `;
 
 function Post() {
-  const state = useLocation().state as IPosts;
+  const state = useLocation().state as IPost;
 
   const navigate = useNavigate();
 
@@ -134,7 +134,7 @@ function Post() {
         <PostBtn_etc onClick={getEditPage}>수정</PostBtn_etc>
         <PostBtn_etc onClick={handlePostDelete}>삭제</PostBtn_etc>
       </PostBtnContainer>
-      <CommentWrite></CommentWrite>
+      <Comment></Comment>
     </PostContainer>
   );
 }
