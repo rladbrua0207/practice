@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import ReactModal from "react-modal";
 import styled from "styled-components";
+import { IPosts } from "../Interface";
 
 const WriteForm = styled.form`
   margin: 50px auto;
@@ -162,8 +163,8 @@ function PostWrite() {
       minute: String(now.getMinutes()).padStart(2, "0"),
     };
 
-    data.postId = now.valueOf();
-    data.date = `${currentTime.year}.${currentTime.month}.${currentTime.date} ${currentTime.hour}:${currentTime.minute}`;
+    data.postId = String(now.valueOf());
+    data.date = `${currentTime.year}.${currentTime.month}.${currentTime.date}. ${currentTime.hour}:${currentTime.minute}`;
     data.name = ``; //로그인 한 사용자 이름
     data.views = 0; //조회수 백엔드랑 함께 구현
     posts = localStorage.getItem("posts")

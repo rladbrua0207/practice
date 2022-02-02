@@ -9,9 +9,13 @@ import PostWrite from "./PostWrite";
 import styled from "styled-components";
 import PostEdit from "./PostEdit";
 
+const Container = styled.div`
+  margin-bottom: 100px;
+`;
+
 function Home() {
   return (
-    <>
+    <Container>
       <NavBar></NavBar>
       <Routes>
         <Route path="/board" element={<Board />}></Route>
@@ -22,7 +26,7 @@ function Home() {
         <Route path="/post/:id" element={<Post />}></Route>
         <Route path="/post/:id/edit" element={<PostEdit />}></Route>
       </Routes>
-    </>
+    </Container>
   );
 }
 
