@@ -1,6 +1,8 @@
 import { useForm } from "react-hook-form";
 import { useLocation } from "react-router-dom";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { loggedInUserAtom } from "../../atoms";
 import { IPost } from "../../Interface";
 
 const Container = styled.div`
@@ -17,16 +19,11 @@ const Textarea = styled.textarea`
   margin: 0 auto;
   resize: none;
   font-size: 1.2rem;
-  margin-top: 10px;
   padding: 10px 5px;
   min-height: 20px;
   border-radius: 5px;
   background-color: #f7f7f7;
   border: 1px solid ${(props) => props.theme.borderColor};
-`;
-
-const Owner = styled.div`
-  margin-left: 3%;
 `;
 
 const Form = styled.form`
@@ -64,6 +61,7 @@ export interface IIsAddComment {
 function CommentWrite({ isAddComment }: IIsAddComment) {
   const { register, handleSubmit, reset } = useForm();
 
+  const [loggedInUser, setloggedInUser] = useRecoilState(loggedInUserAtom);
   const postState = useLocation().state as IPost;
   console.log(postState);
 
@@ -84,7 +82,8 @@ function CommentWrite({ isAddComment }: IIsAddComment) {
 
     newComment.commentId = String(Date.now());
     newComment.postId = postState.postId;
-    newComment.owner = `loggedInUser`;
+    newComment.owner = loggedInUser.name;
+    newComment.ownerId = loggedInUser.userId;
     newComment.createdAt = `${currentTime.year}.${currentTime.month}.${currentTime.date}. ${currentTime.hour}:${currentTime.minute}`;
 
     const comments =
@@ -100,7 +99,6 @@ function CommentWrite({ isAddComment }: IIsAddComment) {
   return (
     <Container>
       <Form onSubmit={handleSubmit(onValid)}>
-        <Owner>댓글 주인 이름</Owner>
         <Textarea
           rows={3}
           placeholder="댓글을 남겨보세요"

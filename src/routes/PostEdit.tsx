@@ -166,7 +166,7 @@ function PostEdit() {
 
     data.postId = state.postId;
     data.createdAt = state.createdAt;
-    data.name = state.name; //로그인 한 사용자 이름
+    data.owner = state.owner; //로그인 한 사용자 이름
     data.views = state.views; //조회수 백엔드랑 함께 구현
     posts = localStorage.getItem("posts")
       ? JSON.parse(localStorage.getItem("posts") as string)

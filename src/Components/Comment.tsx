@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { loggedInUserAtom } from "../atoms";
+
 import { IComment, IPost } from "../Interface";
 import CommentList from "./Comment/CommentList";
 import CommentWrite from "./Comment/CommentWrite";
@@ -10,6 +13,8 @@ const CommentListContainer = styled.ul`
 `;
 
 function Comment() {
+  const loggedInUser = useRecoilValue(loggedInUserAtom);
+
   const allComments: IComment[] = JSON.parse(
     localStorage.getItem("comment") as string
   );
@@ -33,7 +38,12 @@ function Comment() {
 
   return (
     <>
-      <CommentWrite isAddComment={setIsAddComment}></CommentWrite>
+      {loggedInUser.isLoggedIn ? (
+        <CommentWrite isAddComment={setIsAddComment}></CommentWrite>
+      ) : (
+        <></>
+      )}
+
       <CommentListContainer>
         {commentArr?.map((comment, index) => (
           <CommentList

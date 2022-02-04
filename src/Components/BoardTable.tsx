@@ -94,7 +94,7 @@ function BoardTable({ arr: postArr, isLoading }: IPostArr) {
                     no: post.no,
                     category: post.category,
                     title: post.title,
-                    name: post.name,
+                    owner: post.owner,
                     date: post.createdAt,
                     views: post.views,
                     postId: post.postId,
@@ -107,7 +107,7 @@ function BoardTable({ arr: postArr, isLoading }: IPostArr) {
               <td>{post.no}</td>
               <td>{post.category}</td>
               <td>{post.title}</td>
-              <td>{post.name}</td>
+              <td>{post.owner}</td>
               <td>{post.createdAt}</td>
               <td>{post.views}</td>
             </tr>

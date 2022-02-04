@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 import styled from "styled-components";
+import { loggedInUserAtom } from "../atoms";
 
 const NavContainer = styled.div`
   margin-top: 10px;
@@ -44,6 +46,9 @@ const NavItem = styled.div`
 `;
 
 function NavBar() {
+  const loggedInUser = useRecoilValue(loggedInUserAtom);
+
+  const handleLogOut = useResetRecoilState(loggedInUserAtom);
   return (
     <>
       <NavContainer>
@@ -52,14 +57,24 @@ function NavBar() {
             <Link to={`/board`}>게시판</Link>
           </NavItem>
         </LeftNavBox>
-        <RightNavBox>
-          <NavItem id="signin">
-            <Link to={`/signin`}>로그인</Link>
-          </NavItem>
-          <NavItem id="signup">
-            <Link to={`/signup`}>회원가입</Link>
-          </NavItem>
-        </RightNavBox>
+        {loggedInUser.isLoggedIn ? (
+          <RightNavBox>
+            <NavItem id="/">
+              <Link to={`/`} onClick={handleLogOut}>
+                로그아웃
+              </Link>
+            </NavItem>
+          </RightNavBox>
+        ) : (
+          <RightNavBox>
+            <NavItem id="signin">
+              <Link to={`/signin`}>로그인</Link>
+            </NavItem>
+            <NavItem id="signup">
+              <Link to={`/signup`}>회원가입</Link>
+            </NavItem>
+          </RightNavBox>
+        )}
       </NavContainer>
       <hr />
     </>

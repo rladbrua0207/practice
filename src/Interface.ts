@@ -4,10 +4,11 @@ export interface IPost {
   title: string;
   content: string;
   file?: File;
-  name?: string;
+  owner?: string;
   views?: number;
   createdAt?: string;
   postId?: string;
+  ownerId?: string;
 }
 
 export interface IComment {
@@ -16,6 +17,7 @@ export interface IComment {
   createdAt?: string;
   commentId?: string;
   postId?: string;
+  ownerId?: string;
 }
 
 export interface IReply {
@@ -24,6 +26,7 @@ export interface IReply {
   createdAt?: string;
   commentId: string;
   owner?: string;
+  ownerId?: string;
 }
 
 export interface IUser {
@@ -34,4 +37,12 @@ export interface IUser {
   userId: string;
   username: string;
   createdAt: string;
+}
+
+export interface ILoggedInUser {
+  email: string;
+  name: string;
+  userId: string;
+  username: string;
+  isLoggedIn: boolean;
 }

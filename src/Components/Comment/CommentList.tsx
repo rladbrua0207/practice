@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { loggedInUserAtom } from "../../atoms";
 import { IComment } from "../../Interface";
 import Reply from "./Reply";
 
@@ -40,6 +42,7 @@ const CommentReplyBtn = styled.div`
 
 function CommentList({ owner, comment, createdAt, commentId }: IComment) {
   const [replyClicked, setReplyClicked] = useState(false);
+  const [loggedInUser, setloggedInUser] = useRecoilState(loggedInUserAtom);
 
   return (
     <div>
@@ -48,9 +51,13 @@ function CommentList({ owner, comment, createdAt, commentId }: IComment) {
         <Comment>{comment}</Comment>
         <CommentInfoBox>
           <CommentInfoDate>{createdAt}</CommentInfoDate>
-          <CommentReplyBtn onClick={() => setReplyClicked(true)}>
-            답글작성
-          </CommentReplyBtn>
+          {loggedInUser.isLoggedIn ? (
+            <CommentReplyBtn onClick={() => setReplyClicked(true)}>
+              답글작성
+            </CommentReplyBtn>
+          ) : (
+            <></>
+          )}
         </CommentInfoBox>
       </CommentBox>
       <Reply

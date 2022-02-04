@@ -3,7 +3,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import ReactModal from "react-modal";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { loggedInUserAtom } from "../atoms";
 import { IPost } from "../Interface";
 
 const WriteForm = styled.form`
@@ -150,6 +152,7 @@ const ModalContent = styled.div`
 function PostWrite() {
   let posts: string[] = [];
   const { register, handleSubmit } = useForm();
+  const [loggedInUser, setloggedInUser] = useRecoilState(loggedInUserAtom);
 
   const onValid = (data: any) => {
     //인증에 성공했을 때 코드
@@ -165,7 +168,8 @@ function PostWrite() {
 
     data.postId = String(now.valueOf());
     data.createdAt = `${currentTime.year}.${currentTime.month}.${currentTime.date}. ${currentTime.hour}:${currentTime.minute}`;
-    data.name = ``; //로그인 한 사용자 이름
+    data.owner = loggedInUser.name; //로그인 한 사용자 이름
+    data.ownerId = loggedInUser.userId;
     data.views = 0; //조회수 백엔드랑 함께 구현
     posts = localStorage.getItem("posts")
       ? JSON.parse(localStorage.getItem("posts") as string)

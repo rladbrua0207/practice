@@ -1,6 +1,8 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { loggedInUserAtom } from "../../atoms";
 
 const Container = styled.div`
   width: 100%;
@@ -26,7 +28,6 @@ const Textarea = styled.textarea`
   margin: 0 auto;
   resize: none;
   font-size: 1.2rem;
-  margin-top: 10px;
   padding: 10px 5px;
   min-height: 20px;
   border-radius: 5px;
@@ -70,6 +71,7 @@ function ReplyWrite({
   setIsAddReply,
 }: ICommentReplyWritePage) {
   const { register, handleSubmit, reset } = useForm();
+  const [loggedInUser, setloggedInUser] = useRecoilState(loggedInUserAtom);
 
   const onValid = (newReply: any) => {
     if (!window.confirm(`댓글을 작성하시겠습니까?`)) {
@@ -86,7 +88,8 @@ function ReplyWrite({
 
     newReply.replyId = String(Date.now());
     newReply.commentId = commentId;
-    newReply.owner = `loggedInUser`;
+    newReply.owner = loggedInUser.name;
+    newReply.ownerId = loggedInUser.userId;
     newReply.createdAt = `${currentTime.year}.${currentTime.month}.${currentTime.date}. ${currentTime.hour}:${currentTime.minute}`;
 
     const replies = JSON.parse(localStorage.getItem("reply") as string) || [];
@@ -101,10 +104,9 @@ function ReplyWrite({
   return (
     <Container>
       <Form onSubmit={handleSubmit(onValid)}>
-        <Owner>대댓글 주인 이름</Owner>
         <Textarea
           rows={3}
-          placeholder="댓글을 남겨보세요"
+          placeholder="답글을 남겨보세요"
           {...register("reply", {
             required: "댓글을 한 글자 이상 적어 주세요.",
           })}

@@ -4,6 +4,8 @@ import PageNation from "../Components/PageNation";
 import { IPost } from "../Interface";
 import BoardTable from "../Components/BoardTable";
 import { Link } from "react-router-dom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { loggedInUserAtom } from "../atoms";
 
 const Container = styled.div`
   min-height: 900px;
@@ -63,6 +65,7 @@ const WriteBox = styled.div`
 function Board() {
   const allPosts: IPost[] = JSON.parse(localStorage.getItem("posts") as string);
   let postArr: IPost[] = [];
+  const loggedInUser = useRecoilValue(loggedInUserAtom);
 
   const [category, setCategory] = useState("notice");
 
@@ -127,11 +130,15 @@ function Board() {
               postsPerPage={10}
               paginate={setCurrentPage}
             ></PageNation>
-            <WriteBox>
-              <Link id="post" to="/postwrite">
-                글 작성
-              </Link>
-            </WriteBox>
+            {loggedInUser.isLoggedIn ? (
+              <WriteBox>
+                <Link id="post" to="/postwrite">
+                  글 작성
+                </Link>
+              </WriteBox>
+            ) : (
+              <></>
+            )}
           </PostContainer>
         </div>
       )}

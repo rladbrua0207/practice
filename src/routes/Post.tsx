@@ -1,5 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { loggedInUserAtom } from "../atoms";
 import Comment from "../Components/Comment";
 import { IPost } from "../Interface";
 
@@ -88,6 +90,7 @@ const PostBtn_etc = styled.button`
 
 function Post() {
   const state = useLocation().state as IPost;
+  const loggedInUser = useRecoilValue(loggedInUserAtom);
 
   const navigate = useNavigate();
 
@@ -114,7 +117,7 @@ function Post() {
           </tr>
           <tr>
             <th className="table_head">작성자</th>
-            <td>{state.name}</td>
+            <td>{state.owner}</td>
             <th className="table_head">번호</th>
             <td>{state.no}</td>
           </tr>
@@ -129,10 +132,15 @@ function Post() {
           </tr>
         </tbody>
       </TableContainer>
-      <PostBtnContainer>
-        <PostBtn_etc onClick={getEditPage}>수정</PostBtn_etc>
-        <PostBtn_etc onClick={handlePostDelete}>삭제</PostBtn_etc>
-      </PostBtnContainer>
+      {loggedInUser.isLoggedIn ? (
+        <PostBtnContainer>
+          <PostBtn_etc onClick={getEditPage}>수정</PostBtn_etc>
+          <PostBtn_etc onClick={handlePostDelete}>삭제</PostBtn_etc>
+        </PostBtnContainer>
+      ) : (
+        <></>
+      )}
+
       <Comment></Comment>
     </PostContainer>
   );
