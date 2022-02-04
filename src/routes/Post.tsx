@@ -92,6 +92,9 @@ function Post() {
   const state = useLocation().state as IPost;
   const loggedInUser = useRecoilValue(loggedInUserAtom);
 
+  const isOwner = loggedInUser.userId === state.ownerId;
+  console.log(loggedInUser);
+  console.log(state);
   const navigate = useNavigate();
 
   const getEditPage = () => {
@@ -101,9 +104,16 @@ function Post() {
   };
 
   const handlePostDelete = () => {
-    if (window.confirm(`정말 게시물을 삭제하시겠습니까?`)) {
-      navigate(`delete`);
+    if (!window.confirm(`정말 게시물을 삭제하시겠습니까?`)) {
+      return;
     }
+
+    let posts: IPost[] = JSON.parse(localStorage.getItem("post") as string);
+
+    const postIndex = posts.findIndex((post) => post.postId === state.postId);
+    posts = [...posts.slice(0, postIndex), ...posts.slice(postIndex + 1)];
+    localStorage.setItem("post", JSON.stringify(posts));
+    navigate(`/board`);
   };
 
   return (
@@ -132,7 +142,7 @@ function Post() {
           </tr>
         </tbody>
       </TableContainer>
-      {loggedInUser.isLoggedIn ? (
+      {isOwner ? (
         <PostBtnContainer>
           <PostBtn_etc onClick={getEditPage}>수정</PostBtn_etc>
           <PostBtn_etc onClick={handlePostDelete}>삭제</PostBtn_etc>
@@ -140,7 +150,6 @@ function Post() {
       ) : (
         <></>
       )}
-
       <Comment></Comment>
     </PostContainer>
   );

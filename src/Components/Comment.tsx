@@ -28,13 +28,15 @@ function Comment() {
     thisComments ? [...thisComments] : []
   );
   const [isAddComment, setIsAddComment] = useState(false);
+  const [isDeleteComment, setIsDeleteComment] = useState(false);
 
   useEffect(() => {
     (async () => {
       setCommentArr([...thisComments]);
       setIsAddComment(false);
+      setIsDeleteComment(false);
     })();
-  }, [isAddComment]);
+  }, [isAddComment, isDeleteComment]);
 
   return (
     <>
@@ -49,9 +51,11 @@ function Comment() {
           <CommentList
             key={index}
             owner={comment.owner}
+            ownerId={comment.ownerId}
             comment={comment.comment}
             createdAt={comment.createdAt}
             commentId={comment.commentId}
+            isDeleteComment={setIsDeleteComment}
           ></CommentList>
         ))}
       </CommentListContainer>

@@ -63,7 +63,7 @@ const WriteBox = styled.div`
 `;
 
 function Board() {
-  const allPosts: IPost[] = JSON.parse(localStorage.getItem("posts") as string);
+  const allPosts: IPost[] = JSON.parse(localStorage.getItem("post") as string);
   let postArr: IPost[] = [];
   const loggedInUser = useRecoilValue(loggedInUserAtom);
 

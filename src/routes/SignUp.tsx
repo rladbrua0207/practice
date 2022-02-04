@@ -127,7 +127,7 @@ function SignUp() {
       minute: String(now.getMinutes()).padStart(2, "0"),
     };
 
-    newUser.userId = Date.now();
+    newUser.userId = String(Date.now());
     newUser.CreatedAt = `${currentTime.year}.${currentTime.month}.${currentTime.date}. ${currentTime.hour}:${currentTime.minute}`;
 
     console.log(newUser);

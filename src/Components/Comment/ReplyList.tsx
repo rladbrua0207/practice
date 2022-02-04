@@ -1,4 +1,6 @@
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { loggedInUserAtom } from "../../atoms";
 import { IReply } from "../../Interface";
 
 const ReplyBox = styled.li`
@@ -30,23 +32,56 @@ const ReplyInfoBox = styled.div`
 
 const ReplyInfoDate = styled.div``;
 
+const CommentDeleteBtn = styled.div`
+  margin-left: 20px;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
 interface IReplyList {
-  commentId: string;
-  replyArr: IReply[];
+  replyObject: IReply;
+  setIsDeleteReply: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function ReplyList({ commentId, replyArr }: IReplyList) {
+function ReplyList({ replyObject, setIsDeleteReply }: IReplyList) {
+  console.log(replyObject);
+
+  const [loggedInUser, setloggedInUser] = useRecoilState(loggedInUserAtom);
+  const isOwner = loggedInUser.userId === replyObject.ownerId;
+  const handleReplyDelete = () => {
+    if (!window.confirm(`정말 댓글을 삭제하시겠습니까?`)) {
+      return;
+    }
+    let replies: IReply[] = JSON.parse(localStorage.getItem("reply") as string);
+
+    const replyIndex = replies.findIndex(
+      (reply) => reply.replyId === replyObject.replyId
+    );
+    replies = [
+      ...replies.slice(0, replyIndex),
+      ...replies.slice(replyIndex + 1),
+    ];
+    localStorage.setItem("reply", JSON.stringify(replies));
+    setIsDeleteReply(true);
+  };
+
   return (
     <div>
-      {replyArr.map((reply, index) => (
-        <ReplyBox key={index}>
-          <ReplyOwner>{reply.owner}</ReplyOwner>
-          <Reply>{reply.reply}</Reply>
-          <ReplyInfoBox>
-            <ReplyInfoDate>{reply.createdAt}</ReplyInfoDate>
-          </ReplyInfoBox>
-        </ReplyBox>
-      ))}
+      <ReplyBox>
+        <ReplyOwner>{replyObject.owner}</ReplyOwner>
+        <Reply>{replyObject.reply}</Reply>
+        <ReplyInfoBox>
+          <ReplyInfoDate>{replyObject.createdAt}</ReplyInfoDate>
+          {isOwner ? (
+            <CommentDeleteBtn onClick={handleReplyDelete}>
+              답글삭제
+            </CommentDeleteBtn>
+          ) : (
+            <></>
+          )}
+        </ReplyInfoBox>
+      </ReplyBox>
     </div>
   );
 }

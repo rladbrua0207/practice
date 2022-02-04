@@ -169,7 +169,7 @@ function SignIn() {
 
     const loggedInUser = {
       name: users[userIndex].name,
-      userId: users[userIndex].userId,
+      userId: String(users[userIndex].userId),
       username: users[userIndex].username,
       email: users[userIndex].email,
       isLoggedIn: true,
@@ -227,7 +227,6 @@ function SignIn() {
       </SocialLoginWrapper>
     </SignInForm>
   );
-  //여기부터 다시
 }
 
 export default SignIn;

@@ -20,14 +20,16 @@ function Reply({ commentId, replyClicked, setReplyClicked }: IReplyPage) {
 
   const [isAddReply, setIsAddReply] = useState(false);
   const [replyArr, setReplyArr] = useState(thisReplies ? [...thisReplies] : []);
+  const [isDeleteReply, setIsDeleteReply] = useState(false);
 
   useEffect(() => {
     (async () => {
       setReplyArr([...thisReplies]);
       setIsAddReply(false);
       setReplyClicked(false);
+      setIsDeleteReply(false);
     })();
-  }, [isAddReply]);
+  }, [isAddReply, isDeleteReply]);
 
   return (
     <div>
@@ -40,7 +42,14 @@ function Reply({ commentId, replyClicked, setReplyClicked }: IReplyPage) {
       ) : (
         <div></div>
       )}
-      <ReplyList commentId={commentId} replyArr={replyArr}></ReplyList>
+
+      {replyArr.map((reply, index) => (
+        <ReplyList
+          key={index}
+          replyObject={reply}
+          setIsDeleteReply={setIsDeleteReply}
+        ></ReplyList>
+      ))}
     </div>
   );
 }

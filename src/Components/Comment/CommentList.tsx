@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { loggedInUserAtom } from "../../atoms";
@@ -40,9 +41,55 @@ const CommentReplyBtn = styled.div`
   }
 `;
 
-function CommentList({ owner, comment, createdAt, commentId }: IComment) {
+const CommentDeleteBtn = styled.div`
+  margin-left: 20px;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+interface IIsDeleteComment {
+  comment?: string;
+  owner?: string;
+  createdAt?: string;
+  commentId?: string;
+  postId?: string;
+  ownerId?: string;
+  isDeleteComment: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function CommentList({
+  owner,
+  comment,
+  createdAt,
+  commentId,
+  ownerId,
+  isDeleteComment,
+}: IIsDeleteComment) {
   const [replyClicked, setReplyClicked] = useState(false);
   const [loggedInUser, setloggedInUser] = useRecoilState(loggedInUserAtom);
+  const isOwner = loggedInUser.userId === ownerId;
+  const navigate = useNavigate();
+
+  const handleCommentDelete = () => {
+    if (!window.confirm(`정말 댓글을 삭제하시겠습니까?`)) {
+      return;
+    }
+
+    let comments: IComment[] = JSON.parse(
+      localStorage.getItem("comment") as string
+    );
+
+    const commentIndex = comments.findIndex(
+      (comment) => comment.commentId === commentId
+    );
+    comments = [
+      ...comments.slice(0, commentIndex),
+      ...comments.slice(commentIndex + 1),
+    ];
+    localStorage.setItem("comment", JSON.stringify(comments));
+    isDeleteComment(true);
+  };
 
   return (
     <div>
@@ -55,6 +102,13 @@ function CommentList({ owner, comment, createdAt, commentId }: IComment) {
             <CommentReplyBtn onClick={() => setReplyClicked(true)}>
               답글작성
             </CommentReplyBtn>
+          ) : (
+            <></>
+          )}
+          {isOwner ? (
+            <CommentDeleteBtn onClick={handleCommentDelete}>
+              댓글삭제
+            </CommentDeleteBtn>
           ) : (
             <></>
           )}

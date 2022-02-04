@@ -95,11 +95,12 @@ function BoardTable({ arr: postArr, isLoading }: IPostArr) {
                     category: post.category,
                     title: post.title,
                     owner: post.owner,
-                    date: post.createdAt,
+                    createdAt: post.createdAt,
                     views: post.views,
                     postId: post.postId,
                     content: post.content,
                     file: post.file,
+                    ownerId: post.ownerId,
                   },
                 })
               }

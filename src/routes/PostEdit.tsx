@@ -168,8 +168,8 @@ function PostEdit() {
     data.createdAt = state.createdAt;
     data.owner = state.owner; //로그인 한 사용자 이름
     data.views = state.views; //조회수 백엔드랑 함께 구현
-    posts = localStorage.getItem("posts")
-      ? JSON.parse(localStorage.getItem("posts") as string)
+    posts = localStorage.getItem("post")
+      ? JSON.parse(localStorage.getItem("post") as string)
       : [];
 
     const postIndex = posts.findIndex(
@@ -177,7 +177,7 @@ function PostEdit() {
     );
     //
     posts = [...posts.slice(0, postIndex), data, ...posts.slice(postIndex + 1)];
-    localStorage.setItem("posts", JSON.stringify([...posts]));
+    localStorage.setItem("post", JSON.stringify([...posts]));
   };
 
   const [errorIsOpen, setErrorIsOpen] = useState(false);
