@@ -1,12 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import {
-  TableState,
-  usePagination,
-  UsePaginationInstanceProps,
-  useTable,
-} from "react-table";
-import { RecoilState, useRecoilState, useRecoilValue } from "recoil";
+import { useNavigate } from "react-router-dom";
+
 import styled from "styled-components";
 import { IPost } from "../Interface";
 

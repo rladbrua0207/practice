@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
-import styled, { AnyStyledComponent } from "styled-components";
-import { IComment, IPost } from "../../Interface";
+import styled from "styled-components";
+import { IComment } from "../../Interface";
 import Reply from "./Reply";
 
 const CommentBox = styled.li`

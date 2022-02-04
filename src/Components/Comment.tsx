@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useExpanded } from "react-table";
 import styled from "styled-components";
 import { IComment, IPost } from "../Interface";
 import CommentList from "./Comment/CommentList";
@@ -16,11 +15,13 @@ function Comment() {
   );
   const postState = useLocation().state as IPost;
 
-  const thisComments = allComments.filter(
+  const thisComments = allComments?.filter(
     (comment) => comment.postId === postState.postId
   );
 
-  const [commentArr, setCommentArr] = useState([...thisComments]);
+  const [commentArr, setCommentArr] = useState(
+    thisComments ? [...thisComments] : []
+  );
   const [isAddComment, setIsAddComment] = useState(false);
 
   useEffect(() => {
@@ -34,7 +35,7 @@ function Comment() {
     <>
       <CommentWrite isAddComment={setIsAddComment}></CommentWrite>
       <CommentListContainer>
-        {commentArr.map((comment, index) => (
+        {commentArr?.map((comment, index) => (
           <CommentList
             key={index}
             owner={comment.owner}

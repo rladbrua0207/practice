@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { postArrAtom } from "../atoms";
-import { IPost } from "../Interface";
 
 interface IBoardPage {
   totalPosts: number;

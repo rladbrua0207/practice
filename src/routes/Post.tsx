@@ -16,7 +16,6 @@ const TableContainer = styled.table`
   word-break: break-all;
   border-radius: 4px;
 
-  //border: solid 1px #d8d8d8;
   a {
   }
   a:hover,

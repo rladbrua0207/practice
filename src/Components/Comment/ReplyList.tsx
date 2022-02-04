@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { IComment, IPost, IReply } from "../../Interface";
+import { IReply } from "../../Interface";
 
 const ReplyBox = styled.li`
   margin-left: 5%;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { IComment, IReply } from "../../Interface";
+import { IReply } from "../../Interface";
 import ReplyList from "./ReplyList";
 import ReplyWrite from "./ReplyWrite";
 
@@ -14,15 +14,18 @@ function Reply({ commentId, replyClicked, setReplyClicked }: IReplyPage) {
     localStorage.getItem("reply") as string
   );
 
-  const thisReplies = allReply.filter((reply) => reply.commentId === commentId);
+  const thisReplies = allReply?.filter(
+    (reply) => reply.commentId === commentId
+  );
 
   const [isAddReply, setIsAddReply] = useState(false);
-  const [replyArr, setReplyArr] = useState([...thisReplies]);
+  const [replyArr, setReplyArr] = useState(thisReplies ? [...thisReplies] : []);
 
   useEffect(() => {
     (async () => {
       setReplyArr([...thisReplies]);
       setIsAddReply(false);
+      setReplyClicked(false);
     })();
   }, [isAddReply]);
 
