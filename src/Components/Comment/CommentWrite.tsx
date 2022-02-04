@@ -85,7 +85,7 @@ function CommentWrite({ isAddComment }: IIsAddComment) {
     newComment.commentId = String(Date.now());
     newComment.postId = postState.postId;
     newComment.owner = `loggedInUser`;
-    newComment.date = `${currentTime.year}.${currentTime.month}.${currentTime.date}. ${currentTime.hour}:${currentTime.minute}`;
+    newComment.createdAt = `${currentTime.year}.${currentTime.month}.${currentTime.date}. ${currentTime.hour}:${currentTime.minute}`;
 
     const comments =
       JSON.parse(localStorage.getItem("comment") as string) || [];

@@ -38,7 +38,7 @@ const CommentReplyBtn = styled.div`
   }
 `;
 
-function CommentList({ owner, comment, date, commentId }: IComment) {
+function CommentList({ owner, comment, createdAt, commentId }: IComment) {
   const [replyClicked, setReplyClicked] = useState(false);
 
   return (
@@ -47,7 +47,7 @@ function CommentList({ owner, comment, date, commentId }: IComment) {
         <CommentOwner>{owner}</CommentOwner>
         <Comment>{comment}</Comment>
         <CommentInfoBox>
-          <CommentInfoDate>{date}</CommentInfoDate>
+          <CommentInfoDate>{createdAt}</CommentInfoDate>
           <CommentReplyBtn onClick={() => setReplyClicked(true)}>
             답글작성
           </CommentReplyBtn>

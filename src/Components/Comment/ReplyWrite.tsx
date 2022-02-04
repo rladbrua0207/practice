@@ -87,7 +87,7 @@ function ReplyWrite({
     newReply.replyId = String(Date.now());
     newReply.commentId = commentId;
     newReply.owner = `loggedInUser`;
-    newReply.date = `${currentTime.year}.${currentTime.month}.${currentTime.date}. ${currentTime.hour}:${currentTime.minute}`;
+    newReply.createdAt = `${currentTime.year}.${currentTime.month}.${currentTime.date}. ${currentTime.hour}:${currentTime.minute}`;
 
     const replies = JSON.parse(localStorage.getItem("reply") as string) || [];
 

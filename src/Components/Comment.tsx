@@ -40,7 +40,7 @@ function Comment() {
             key={index}
             owner={comment.owner}
             comment={comment.comment}
-            date={comment.date}
+            createdAt={comment.createdAt}
             commentId={comment.commentId}
           ></CommentList>
         ))}

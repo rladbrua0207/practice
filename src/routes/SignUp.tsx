@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { IUser } from "../Interface";
 
 const SignUpForm = styled.form`
   display: flex;
@@ -72,8 +74,9 @@ interface ISignUpForm {
 const signUpInfoArr = ["username", "password"];
 
 function SignUp() {
-  const { register, handleSubmit, formState, setError } =
+  const { register, handleSubmit, formState, setError, reset } =
     useForm<ISignUpForm>();
+  const navigate = useNavigate();
 
   const [isFocus, setIsFocus] = useState([false, false]);
   const onFocus = (event: React.FocusEvent<HTMLInputElement>) => {
@@ -90,12 +93,50 @@ function SignUp() {
     setIsFocus((value) => [(value[0] = false), (value[1] = false)]);
   };
 
-  const onValid = (data: any) => {
-    if (data?.password !== data?.passwordConfirm) {
+  const onValid = (newUser: any) => {
+    const users: IUser[] =
+      JSON.parse(localStorage.getItem("user") as string) || [];
+
+    if (users.findIndex((user) => user.email === newUser.email) !== -1) {
+      return setError("email", {
+        message: "이미 가입한 이메일입니다.",
+      });
+    } else if (
+      users.findIndex((user) => user.username === newUser.username) !== -1
+    ) {
+      return setError("username", {
+        message: "이미 가입한 아이디입니다..",
+      });
+    } else if (newUser?.password !== newUser?.passwordConfirm) {
       return setError("passwordConfirm", {
         message: "비밀번호가 일치하지 않습니다.",
       });
     }
+
+    if (users)
+      if (!window.confirm(`회원가입을 하시겠습니까?`)) {
+        return;
+      }
+
+    const now = new Date();
+    const currentTime = {
+      year: now.getFullYear(),
+      month: String(now.getMonth() + 1).padStart(2, "0"),
+      date: String(now.getDate()).padStart(2, "0"),
+      hour: String(now.getHours()).padStart(2, "0"),
+      minute: String(now.getMinutes()).padStart(2, "0"),
+    };
+
+    newUser.userId = Date.now();
+    newUser.CreatedAt = `${currentTime.year}.${currentTime.month}.${currentTime.date}. ${currentTime.hour}:${currentTime.minute}`;
+
+    console.log(newUser);
+
+    localStorage.setItem("user", JSON.stringify([...users, newUser]));
+
+    navigate(`/signin`);
+
+    reset();
   };
 
   return (

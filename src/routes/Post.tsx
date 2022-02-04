@@ -122,7 +122,7 @@ function Post() {
             <th className="table_head">조회수</th>
             <td>{state.views}</td>
             <th className="table_head">등록일</th>
-            <td>{state.date}</td>
+            <td>{state.createdAt}</td>
           </tr>
           <tr id="content">
             <td colSpan={4}>{state.content}</td>

@@ -43,7 +43,7 @@ function ReplyList({ commentId, replyArr }: IReplyList) {
           <ReplyOwner>{reply.owner}</ReplyOwner>
           <Reply>{reply.reply}</Reply>
           <ReplyInfoBox>
-            <ReplyInfoDate>{reply.date}</ReplyInfoDate>
+            <ReplyInfoDate>{reply.createdAt}</ReplyInfoDate>
           </ReplyInfoBox>
         </ReplyBox>
       ))}

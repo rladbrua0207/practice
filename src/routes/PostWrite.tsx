@@ -164,7 +164,7 @@ function PostWrite() {
     };
 
     data.postId = String(now.valueOf());
-    data.date = `${currentTime.year}.${currentTime.month}.${currentTime.date}. ${currentTime.hour}:${currentTime.minute}`;
+    data.createdAt = `${currentTime.year}.${currentTime.month}.${currentTime.date}. ${currentTime.hour}:${currentTime.minute}`;
     data.name = ``; //로그인 한 사용자 이름
     data.views = 0; //조회수 백엔드랑 함께 구현
     posts = localStorage.getItem("posts")

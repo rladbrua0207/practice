@@ -6,14 +6,14 @@ export interface IPost {
   file?: File;
   name?: string;
   views?: number;
-  date?: string;
+  createdAt?: string;
   postId?: string;
 }
 
 export interface IComment {
   comment?: string;
   owner?: string;
-  date?: string;
+  createdAt?: string;
   commentId?: string;
   postId?: string;
 }
@@ -21,7 +21,17 @@ export interface IComment {
 export interface IReply {
   reply: string;
   replyId?: string;
-  date?: string;
+  createdAt?: string;
   commentId: string;
   owner?: string;
+}
+
+export interface IUser {
+  email: string;
+  name: string;
+  password: string;
+  passwordConfirm?: string;
+  userId: string;
+  username: string;
+  createdAt: string;
 }
