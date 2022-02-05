@@ -1,12 +1,12 @@
-import { faFacebookSquare, faGithub } from "@fortawesome/free-brands-svg-icons";
+import { faFacebookSquare } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useForm } from "react-hook-form";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import KakaoLogin from "../Components/socialLogin/KakaoLogin";
 import GithubLogin from "../Components/socialLogin/GithubLogin";
 import GoogleLogin from "../Components/socialLogin/GoogleLogin";
-import { IUser } from "../Interface";
+import { ISignInForm, IUser } from "../Interface";
 import { useRecoilState } from "recoil";
 import { loggedInUserAtom } from "../atoms";
 
@@ -136,45 +136,41 @@ const SocialLoginBtn = styled.div`
   }
 `;
 
-interface ISignInForm {
-  username: string;
-  password: string;
-}
-
 function SignIn() {
   const { register, handleSubmit, formState, setError } =
     useForm<ISignInForm>();
 
   const [loggedInUser, setloggedInUser] = useRecoilState(loggedInUserAtom);
-
   const navigate = useNavigate();
 
   const onValid = (data: any) => {
-    console.log(data);
-
     const users: IUser[] =
       JSON.parse(localStorage.getItem("user") as string) || [];
 
     const userIndex = users.findIndex(
       (user) => user.username === data.username
     );
-
-    if (userIndex === -1) {
-      return setError("username", { message: `아이디를 확인해주세요` });
-    } else {
-      if (users[userIndex].password !== data.password) {
-        return setError("password", { message: `비밀번호를 확인해주세요` });
+    const confirmUser = (userIndex: number) => {
+      if (userIndex === -1) {
+        return setError("username", { message: `아이디를 확인해주세요` });
+      } else {
+        if (users[userIndex].password !== data.password) {
+          return setError("password", { message: `비밀번호를 확인해주세요` });
+        }
       }
-    }
+    };
 
-    const loggedInUser = {
+    confirmUser(userIndex);
+
+    const loggedInUserObject = {
       name: users[userIndex].name,
       userId: String(users[userIndex].userId),
       username: users[userIndex].username,
       email: users[userIndex].email,
       isLoggedIn: true,
     };
-    setloggedInUser(loggedInUser);
+
+    setloggedInUser(loggedInUserObject);
     navigate("/");
   };
 

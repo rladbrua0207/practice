@@ -4,7 +4,7 @@ import PageNation from "../Components/PageNation";
 import { IPost } from "../Interface";
 import BoardTable from "../Components/BoardTable";
 import { Link } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import { loggedInUserAtom } from "../atoms";
 
 const Container = styled.div`
@@ -66,20 +66,18 @@ function Board() {
   const allPosts: IPost[] = JSON.parse(localStorage.getItem("post") as string);
   let postArr: IPost[] = [];
   const loggedInUser = useRecoilValue(loggedInUserAtom);
-
   const [category, setCategory] = useState("notice");
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleCategory = (event: React.FormEvent<HTMLSelectElement>) => {
     const category = event.currentTarget.value;
     setCategory(category);
-    console.log(category);
   };
 
   const setPostArr = () => {
     if (allPosts?.filter((allPosts) => allPosts.category === category)) {
       postArr = allPosts?.filter((allPosts) => allPosts.category === category);
     }
-
     for (let i = 0; i < postArr?.length; i++) {
       postArr[i].no = i + 1;
     }
@@ -87,11 +85,9 @@ function Board() {
 
   function currentPosts(tmp: IPost[]) {
     const currentPosts = tmp.slice(indexOfFirst, indexOfLast);
-    console.log(indexOfLast);
     return currentPosts;
   }
 
-  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     (async () => {
       setPostArr();
@@ -104,7 +100,6 @@ function Board() {
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(10);
   const indexOfLast = currentPage * postsPerPage;
-  console.log(indexOfLast);
   const indexOfFirst = indexOfLast - postsPerPage;
 
   return (
@@ -120,10 +115,7 @@ function Board() {
                 <option value={"notice"}>공지사항</option>
                 <option value={"question"}>질문</option>
               </WriteSelect>
-              <BoardTable
-                arr={currentPosts(Posts)}
-                isLoading={isLoading}
-              ></BoardTable>
+              <BoardTable arr={currentPosts(Posts)}></BoardTable>
             </PostWrapper>
             <PageNation
               totalPosts={Posts.length}

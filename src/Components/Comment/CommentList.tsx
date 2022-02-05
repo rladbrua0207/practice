@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { loggedInUserAtom } from "../../atoms";
@@ -69,7 +68,6 @@ function CommentList({
   const [replyClicked, setReplyClicked] = useState(false);
   const [loggedInUser, setloggedInUser] = useRecoilState(loggedInUserAtom);
   const isOwner = loggedInUser.userId === ownerId;
-  const navigate = useNavigate();
 
   const handleCommentDelete = () => {
     if (!window.confirm(`정말 댓글을 삭제하시겠습니까?`)) {
@@ -79,7 +77,6 @@ function CommentList({
     let comments: IComment[] = JSON.parse(
       localStorage.getItem("comment") as string
     );
-
     const commentIndex = comments.findIndex(
       (comment) => comment.commentId === commentId
     );
@@ -88,6 +85,7 @@ function CommentList({
       ...comments.slice(commentIndex + 1),
     ];
     localStorage.setItem("comment", JSON.stringify(comments));
+
     isDeleteComment(true);
   };
 

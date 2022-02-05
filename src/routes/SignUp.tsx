@@ -74,7 +74,7 @@ interface ISignUpForm {
 const signUpInfoArr = ["username", "password"];
 
 function SignUp() {
-  const { register, handleSubmit, formState, setError, reset } =
+  const { register, handleSubmit, formState, setError } =
     useForm<ISignUpForm>();
   const navigate = useNavigate();
 
@@ -88,7 +88,7 @@ function SignUp() {
     }
   };
 
-  const onBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+  const onBlur = () => {
     //username, password input에 포커스가 풀렸을 때 규칙설명 닫기
     setIsFocus((value) => [(value[0] = false), (value[1] = false)]);
   };
@@ -112,11 +112,9 @@ function SignUp() {
         message: "비밀번호가 일치하지 않습니다.",
       });
     }
-
-    if (users)
-      if (!window.confirm(`회원가입을 하시겠습니까?`)) {
-        return;
-      }
+    if (!window.confirm(`회원가입을 하시겠습니까?`)) {
+      return;
+    }
 
     const now = new Date();
     const currentTime = {
@@ -130,13 +128,9 @@ function SignUp() {
     newUser.userId = String(Date.now());
     newUser.CreatedAt = `${currentTime.year}.${currentTime.month}.${currentTime.date}. ${currentTime.hour}:${currentTime.minute}`;
 
-    console.log(newUser);
-
     localStorage.setItem("user", JSON.stringify([...users, newUser]));
 
     navigate(`/signin`);
-
-    reset();
   };
 
   return (

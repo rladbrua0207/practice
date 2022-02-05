@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
+import { useRecoilValue, useResetRecoilState } from "recoil";
 import styled from "styled-components";
 import { loggedInUserAtom } from "../atoms";
 
@@ -47,8 +47,8 @@ const NavItem = styled.div`
 
 function NavBar() {
   const loggedInUser = useRecoilValue(loggedInUserAtom);
-
   const handleLogOut = useResetRecoilState(loggedInUserAtom);
+
   return (
     <>
       <NavContainer>

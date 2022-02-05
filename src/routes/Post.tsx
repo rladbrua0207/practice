@@ -1,8 +1,8 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { loggedInUserAtom } from "../atoms";
-import Comment from "../Components/Comment";
+import Comment from "../Components/Comment/Comment";
 import { IPost } from "../Interface";
 
 const TableContainer = styled.table`
@@ -90,12 +90,9 @@ const PostBtn_etc = styled.button`
 
 function Post() {
   const state = useLocation().state as IPost;
-  const loggedInUser = useRecoilValue(loggedInUserAtom);
-
-  const isOwner = loggedInUser.userId === state.ownerId;
-  console.log(loggedInUser);
-  console.log(state);
   const navigate = useNavigate();
+  const loggedInUser = useRecoilValue(loggedInUserAtom);
+  const isOwner = loggedInUser.userId === state.ownerId;
 
   const getEditPage = () => {
     if (window.confirm(`게시물을 수정하시겠습니까?`)) {
@@ -107,12 +104,11 @@ function Post() {
     if (!window.confirm(`정말 게시물을 삭제하시겠습니까?`)) {
       return;
     }
-
     let posts: IPost[] = JSON.parse(localStorage.getItem("post") as string);
-
     const postIndex = posts.findIndex((post) => post.postId === state.postId);
     posts = [...posts.slice(0, postIndex), ...posts.slice(postIndex + 1)];
     localStorage.setItem("post", JSON.stringify(posts));
+
     navigate(`/board`);
   };
 

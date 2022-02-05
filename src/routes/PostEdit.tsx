@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import ReactModal from "react-modal";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { IPost } from "../Interface";
 
@@ -150,7 +150,7 @@ const ModalContent = styled.div`
 
 function PostEdit() {
   let posts: string[] = [];
-
+  const navigate = useNavigate();
   const state = useLocation().state as IPost;
   const { register, handleSubmit } = useForm({
     defaultValues: {
@@ -160,24 +160,36 @@ function PostEdit() {
       category: state.category,
     },
   });
-  console.log(state);
-  const onValid = (data: any) => {
+  const onValid = (editPost: any) => {
     //인증에 성공했을 때 코드
+    if (!window.confirm("게시글을 수정하시겠습니까?")) {
+      return;
+    }
 
-    data.postId = state.postId;
-    data.createdAt = state.createdAt;
-    data.owner = state.owner; //로그인 한 사용자 이름
-    data.views = state.views; //조회수 백엔드랑 함께 구현
-    posts = localStorage.getItem("post")
-      ? JSON.parse(localStorage.getItem("post") as string)
-      : [];
+    const setEditPost = () => {
+      editPost.postId = state.postId;
+      editPost.createdAt = state.createdAt;
+      editPost.owner = state.owner; //로그인 한 사용자 이름
+      editPost.views = state.views; //조회수 백엔드랑 함께 구현
+      editPost.ownerId = state.ownerId;
+      posts = localStorage.getItem("post")
+        ? JSON.parse(localStorage.getItem("post") as string)
+        : [];
 
-    const postIndex = posts.findIndex(
-      (post: any) => post.postId === state.postId
-    );
-    //
-    posts = [...posts.slice(0, postIndex), data, ...posts.slice(postIndex + 1)];
-    localStorage.setItem("post", JSON.stringify([...posts]));
+      const postIndex = posts.findIndex(
+        (post: any) => post.postId === state.postId
+      );
+      //
+      posts = [
+        ...posts.slice(0, postIndex),
+        editPost,
+        ...posts.slice(postIndex + 1),
+      ];
+      localStorage.setItem("post", JSON.stringify([...posts]));
+    };
+
+    setEditPost();
+    navigate(`/board`);
   };
 
   const [errorIsOpen, setErrorIsOpen] = useState(false);

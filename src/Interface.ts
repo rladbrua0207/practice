@@ -1,3 +1,8 @@
+export interface ISignInForm {
+  username: string;
+  password: string;
+}
+
 export interface IPost {
   no?: number;
   category: string;

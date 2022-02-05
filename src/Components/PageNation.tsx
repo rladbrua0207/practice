@@ -52,24 +52,9 @@ function PageNation({ totalPosts, postsPerPage, paginate }: IBoardPage) {
   const pageNumInterval = 5;
 
   const arr = createArr(Number(maxPage));
-  const v = Number(pageBlock * pageNumInterval);
-  let pageNumArr = arr.slice(v, pageNumInterval + v);
+  const startPageNum = Number(pageBlock * pageNumInterval);
+  let pageNumArr = arr.slice(startPageNum, pageNumInterval + startPageNum);
 
-  useEffect(() => {
-    (async () => {
-      selectedPage(`${currPage}`);
-    })();
-  }, [pageBlock]);
-
-  if (maxPage <= 1) {
-    return <Paging></Paging>;
-  }
-
-  const updateCurrPage = (n: number) => {
-    currPage = n;
-    paginate(currPage);
-    selectedPage(`${n}`);
-  };
   const selectedPage = (n: string) => {
     pageNumArr.map((n) => {
       const id = document.getElementById(`${n}`);
@@ -78,6 +63,13 @@ function PageNation({ totalPosts, postsPerPage, paginate }: IBoardPage) {
     const id = document.getElementById(`${n}`);
     id?.classList.add("selected");
   };
+
+  const updateCurrPage = (n: number) => {
+    currPage = n;
+    paginate(currPage);
+    selectedPage(`${n}`);
+  };
+
   const nextPage = () => {
     if (currPage >= maxPage) return;
     currPage += 1;
@@ -112,6 +104,16 @@ function PageNation({ totalPosts, postsPerPage, paginate }: IBoardPage) {
     selectedPage(`${currPage}`);
     console.log(currPage);
   };
+
+  useEffect(() => {
+    (async () => {
+      selectedPage(`${currPage}`);
+    })();
+  }, [pageBlock]);
+
+  if (maxPage <= 1) {
+    return <Paging></Paging>;
+  }
 
   return (
     <Paging>

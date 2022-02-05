@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-
 import styled from "styled-components";
 import { IPost } from "../Interface";
 
@@ -64,11 +63,10 @@ const Table = styled.table`
 `;
 
 interface IPostArr {
-  isLoading: boolean;
   arr: IPost[];
 }
 
-function BoardTable({ arr: postArr, isLoading }: IPostArr) {
+function BoardTable({ arr: postArr }: IPostArr) {
   const navigate = useNavigate();
 
   return (

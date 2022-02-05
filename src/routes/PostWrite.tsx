@@ -3,10 +3,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import ReactModal from "react-modal";
+import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { loggedInUserAtom } from "../atoms";
-import { IPost } from "../Interface";
 
 const WriteForm = styled.form`
   margin: 50px auto;
@@ -153,29 +153,40 @@ function PostWrite() {
   let posts: string[] = [];
   const { register, handleSubmit } = useForm();
   const [loggedInUser, setloggedInUser] = useRecoilState(loggedInUserAtom);
+  const navigate = useNavigate();
 
-  const onValid = (data: any) => {
+  const onValid = (newPost: any) => {
     //인증에 성공했을 때 코드
-    let now = new Date();
-    console.log(data);
-    const currentTime = {
-      year: now.getFullYear(),
-      month: String(now.getMonth() + 1).padStart(2, "0"),
-      date: String(now.getDate()).padStart(2, "0"),
-      hour: String(now.getHours()).padStart(2, "0"),
-      minute: String(now.getMinutes()).padStart(2, "0"),
+    if (!window.confirm("게시글을 작성하시겠습니까?")) {
+      return;
+    }
+
+    const setNewPost = () => {
+      let now = new Date();
+      const currentTime = {
+        year: now.getFullYear(),
+        month: String(now.getMonth() + 1).padStart(2, "0"),
+        date: String(now.getDate()).padStart(2, "0"),
+        hour: String(now.getHours()).padStart(2, "0"),
+        minute: String(now.getMinutes()).padStart(2, "0"),
+      };
+
+      newPost.postId = String(now.valueOf());
+      newPost.createdAt = `${currentTime.year}.${currentTime.month}.${currentTime.date}. ${currentTime.hour}:${currentTime.minute}`;
+      newPost.owner = loggedInUser.name; //로그인 한 사용자 이름
+      newPost.ownerId = String(loggedInUser.userId);
+      newPost.views = 0; //조회수 백엔드랑 함께 구현
+
+      posts = localStorage.getItem("post")
+        ? JSON.parse(localStorage.getItem("post") as string)
+        : [];
+      posts.push(newPost);
+      localStorage.setItem("post", JSON.stringify(posts));
     };
 
-    data.postId = String(now.valueOf());
-    data.createdAt = `${currentTime.year}.${currentTime.month}.${currentTime.date}. ${currentTime.hour}:${currentTime.minute}`;
-    data.owner = loggedInUser.name; //로그인 한 사용자 이름
-    data.ownerId = String(loggedInUser.userId);
-    data.views = 0; //조회수 백엔드랑 함께 구현
-    posts = localStorage.getItem("post")
-      ? JSON.parse(localStorage.getItem("post") as string)
-      : [];
-    posts.push(data);
-    localStorage.setItem("post", JSON.stringify([...posts]));
+    setNewPost();
+
+    navigate("/board");
   };
 
   const [errorIsOpen, setErrorIsOpen] = useState(false);

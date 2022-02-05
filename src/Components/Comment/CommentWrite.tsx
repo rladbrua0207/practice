@@ -60,39 +60,40 @@ export interface IIsAddComment {
 
 function CommentWrite({ isAddComment }: IIsAddComment) {
   const { register, handleSubmit, reset } = useForm();
-
   const [loggedInUser, setloggedInUser] = useRecoilState(loggedInUserAtom);
   const postState = useLocation().state as IPost;
-  console.log(postState);
 
   const onValid = (newComment: any) => {
     if (!window.confirm(`댓글을 작성하시겠습니까?`)) {
       return;
     }
+    const setNewComment = () => {
+      const now = new Date();
+      const currentTime = {
+        year: now.getFullYear(),
+        month: String(now.getMonth() + 1).padStart(2, "0"),
+        date: String(now.getDate()).padStart(2, "0"),
+        hour: String(now.getHours()).padStart(2, "0"),
+        minute: String(now.getMinutes()).padStart(2, "0"),
+      };
 
-    console.log(newComment);
-    const now = new Date();
-    const currentTime = {
-      year: now.getFullYear(),
-      month: String(now.getMonth() + 1).padStart(2, "0"),
-      date: String(now.getDate()).padStart(2, "0"),
-      hour: String(now.getHours()).padStart(2, "0"),
-      minute: String(now.getMinutes()).padStart(2, "0"),
+      newComment.commentId = String(Date.now());
+      newComment.postId = postState.postId;
+      newComment.owner = loggedInUser.name;
+      newComment.ownerId = loggedInUser.userId;
+      newComment.createdAt = `${currentTime.year}.${currentTime.month}.${currentTime.date}. ${currentTime.hour}:${currentTime.minute}`;
+
+      const comments =
+        JSON.parse(localStorage.getItem("comment") as string) || [];
+
+      localStorage.setItem(
+        "comment",
+        JSON.stringify([...comments, newComment])
+      );
     };
 
-    newComment.commentId = String(Date.now());
-    newComment.postId = postState.postId;
-    newComment.owner = loggedInUser.name;
-    newComment.ownerId = loggedInUser.userId;
-    newComment.createdAt = `${currentTime.year}.${currentTime.month}.${currentTime.date}. ${currentTime.hour}:${currentTime.minute}`;
-
-    const comments =
-      JSON.parse(localStorage.getItem("comment") as string) || [];
-
-    localStorage.setItem("comment", JSON.stringify([...comments, newComment]));
-
+    setNewComment();
     isAddComment(true);
-
     reset();
   };
 

@@ -45,8 +45,6 @@ interface IReplyList {
 }
 
 function ReplyList({ replyObject, setIsDeleteReply }: IReplyList) {
-  console.log(replyObject);
-
   const [loggedInUser, setloggedInUser] = useRecoilState(loggedInUserAtom);
   const isOwner = loggedInUser.userId === replyObject.ownerId;
   const handleReplyDelete = () => {

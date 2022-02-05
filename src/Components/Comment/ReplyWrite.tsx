@@ -77,27 +77,30 @@ function ReplyWrite({
     if (!window.confirm(`댓글을 작성하시겠습니까?`)) {
       return;
     }
-    const now = new Date();
-    const currentTime = {
-      year: now.getFullYear(),
-      month: String(now.getMonth() + 1).padStart(2, "0"),
-      date: String(now.getDate()).padStart(2, "0"),
-      hour: String(now.getHours()).padStart(2, "0"),
-      minute: String(now.getMinutes()).padStart(2, "0"),
+
+    const setNewReply = () => {
+      const now = new Date();
+      const currentTime = {
+        year: now.getFullYear(),
+        month: String(now.getMonth() + 1).padStart(2, "0"),
+        date: String(now.getDate()).padStart(2, "0"),
+        hour: String(now.getHours()).padStart(2, "0"),
+        minute: String(now.getMinutes()).padStart(2, "0"),
+      };
+
+      newReply.replyId = String(Date.now());
+      newReply.commentId = commentId;
+      newReply.owner = loggedInUser.name;
+      newReply.ownerId = loggedInUser.userId;
+      newReply.createdAt = `${currentTime.year}.${currentTime.month}.${currentTime.date}. ${currentTime.hour}:${currentTime.minute}`;
+
+      const replies = JSON.parse(localStorage.getItem("reply") as string) || [];
+
+      localStorage.setItem("reply", JSON.stringify([...replies, newReply]));
     };
 
-    newReply.replyId = String(Date.now());
-    newReply.commentId = commentId;
-    newReply.owner = loggedInUser.name;
-    newReply.ownerId = loggedInUser.userId;
-    newReply.createdAt = `${currentTime.year}.${currentTime.month}.${currentTime.date}. ${currentTime.hour}:${currentTime.minute}`;
-
-    const replies = JSON.parse(localStorage.getItem("reply") as string) || [];
-
-    localStorage.setItem("reply", JSON.stringify([...replies, newReply]));
-
+    setNewReply();
     setIsAddReply(true);
-
     reset();
   };
 
