@@ -47,6 +47,7 @@ interface IReplyList {
 function ReplyList({ replyObject, setIsDeleteReply }: IReplyList) {
   const [loggedInUser, setloggedInUser] = useRecoilState(loggedInUserAtom);
   const isOwner = loggedInUser.userId === replyObject.ownerId;
+
   const handleReplyDelete = () => {
     if (!window.confirm(`정말 댓글을 삭제하시겠습니까?`)) {
       return;

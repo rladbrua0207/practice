@@ -54,7 +54,8 @@ function Comment() {
             comment={comment.comment}
             createdAt={comment.createdAt}
             commentId={comment.commentId}
-            isDeleteComment={setIsDeleteComment}
+            setIsDeleteComment={setIsDeleteComment}
+            isDeleteComment={isDeleteComment}
           ></CommentList>
         ))}
       </CommentListContainer>

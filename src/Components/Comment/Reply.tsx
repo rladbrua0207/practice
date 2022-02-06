@@ -7,20 +7,26 @@ interface IReplyPage {
   commentId: string;
   replyClicked: boolean;
   setReplyClicked: React.Dispatch<React.SetStateAction<boolean>>;
+  isDeleteComment: boolean;
+  isDeleteReply: boolean;
+  setIsDeleteReply: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function Reply({ commentId, replyClicked, setReplyClicked }: IReplyPage) {
-  const allReply: IReply[] = JSON.parse(
-    localStorage.getItem("reply") as string
-  );
+function Reply({
+  commentId,
+  replyClicked,
+  setReplyClicked,
+  isDeleteComment,
+  isDeleteReply,
+  setIsDeleteReply,
+}: IReplyPage) {
+  let allReply: IReply[] = JSON.parse(localStorage.getItem("reply") as string);
 
-  const thisReplies = allReply?.filter(
-    (reply) => reply.commentId === commentId
-  );
+  let thisReplies = allReply?.filter((reply) => reply.commentId === commentId);
+  console.log(commentId, thisReplies);
 
   const [isAddReply, setIsAddReply] = useState(false);
   const [replyArr, setReplyArr] = useState(thisReplies ? thisReplies : []);
-  const [isDeleteReply, setIsDeleteReply] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -29,7 +35,7 @@ function Reply({ commentId, replyClicked, setReplyClicked }: IReplyPage) {
       setReplyClicked(false);
       setIsDeleteReply(false);
     })();
-  }, [isAddReply, isDeleteReply]);
+  }, [isAddReply, isDeleteReply, isDeleteComment]);
 
   return (
     <div>

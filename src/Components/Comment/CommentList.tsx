@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { loggedInUserAtom } from "../../atoms";
-import { IComment } from "../../Interface";
+import { IComment, IReply } from "../../Interface";
 import Reply from "./Reply";
 
 const CommentBox = styled.li`
@@ -54,7 +54,8 @@ interface IIsDeleteComment {
   commentId?: string;
   postId?: string;
   ownerId?: string;
-  isDeleteComment: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsDeleteComment: React.Dispatch<React.SetStateAction<boolean>>;
+  isDeleteComment: boolean;
 }
 
 function CommentList({
@@ -63,16 +64,27 @@ function CommentList({
   createdAt,
   commentId,
   ownerId,
+  setIsDeleteComment,
   isDeleteComment,
 }: IIsDeleteComment) {
   const [replyClicked, setReplyClicked] = useState(false);
   const [loggedInUser, setloggedInUser] = useRecoilState(loggedInUserAtom);
+  const [isDeleteReply, setIsDeleteReply] = useState(false);
   const isOwner = loggedInUser.userId === ownerId;
 
   const handleCommentDelete = () => {
     if (!window.confirm(`정말 댓글을 삭제하시겠습니까?`)) {
       return;
     }
+
+    const handleReplyDelete = () => {
+      let replies: IReply[] = JSON.parse(
+        localStorage.getItem("reply") as string
+      );
+      replies = replies.filter((reply) => reply.commentId !== commentId);
+      localStorage.setItem("reply", JSON.stringify(replies));
+      setIsDeleteReply(true);
+    };
 
     let comments: IComment[] = JSON.parse(
       localStorage.getItem("comment") as string
@@ -86,7 +98,8 @@ function CommentList({
     ];
     localStorage.setItem("comment", JSON.stringify(comments));
 
-    isDeleteComment(true);
+    handleReplyDelete();
+    setIsDeleteComment(true);
   };
 
   return (
@@ -116,6 +129,9 @@ function CommentList({
         commentId={commentId ? commentId : ""}
         replyClicked={replyClicked}
         setReplyClicked={setReplyClicked}
+        isDeleteComment={isDeleteComment}
+        isDeleteReply={isDeleteReply}
+        setIsDeleteReply={setIsDeleteReply}
       ></Reply>
     </div>
   );
