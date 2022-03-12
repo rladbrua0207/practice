@@ -3,7 +3,6 @@ import { useLocation } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { loggedInUserAtom } from "../../atoms";
-
 import { IComment, IPost } from "../../Interface";
 import CommentList from "./CommentList";
 import CommentWrite from "./CommentWrite";
@@ -49,11 +48,7 @@ function Comment() {
         {commentArr?.map((comment, index) => (
           <CommentList
             key={index}
-            owner={comment.owner}
-            ownerId={comment.ownerId}
-            comment={comment.comment}
-            createdAt={comment.createdAt}
-            commentId={comment.commentId}
+            commentObj={comment}
             setIsDeleteComment={setIsDeleteComment}
             isDeleteComment={isDeleteComment}
           ></CommentList>

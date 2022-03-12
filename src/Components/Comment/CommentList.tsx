@@ -48,29 +48,27 @@ const CommentDeleteBtn = styled.div`
 `;
 
 interface IIsDeleteComment {
-  comment?: string;
-  owner?: string;
-  createdAt?: string;
-  commentId?: string;
-  postId?: string;
-  ownerId?: string;
+  commentObj: {
+    comment?: string;
+    owner?: string;
+    createdAt?: string;
+    commentId?: string;
+    postId?: string;
+    ownerId?: string;
+  };
   setIsDeleteComment: React.Dispatch<React.SetStateAction<boolean>>;
   isDeleteComment: boolean;
 }
 
 function CommentList({
-  owner,
-  comment,
-  createdAt,
-  commentId,
-  ownerId,
+  commentObj,
   setIsDeleteComment,
   isDeleteComment,
 }: IIsDeleteComment) {
   const [replyClicked, setReplyClicked] = useState(false);
   const [loggedInUser, setloggedInUser] = useRecoilState(loggedInUserAtom);
   const [isDeleteReply, setIsDeleteReply] = useState(false);
-  const isOwner = loggedInUser.userId === ownerId;
+  const isOwner = loggedInUser.userId === commentObj.ownerId;
 
   const handleCommentDelete = () => {
     if (!window.confirm(`정말 댓글을 삭제하시겠습니까?`)) {
@@ -81,7 +79,9 @@ function CommentList({
       let replies: IReply[] = JSON.parse(
         localStorage.getItem("reply") as string
       );
-      replies = replies.filter((reply) => reply.commentId !== commentId);
+      replies = replies.filter(
+        (reply) => reply.commentId !== commentObj.commentId
+      );
       localStorage.setItem("reply", JSON.stringify(replies));
       setIsDeleteReply(true);
     };
@@ -90,7 +90,7 @@ function CommentList({
       localStorage.getItem("comment") as string
     );
     const commentIndex = comments.findIndex(
-      (comment) => comment.commentId === commentId
+      (comment) => comment.commentId === commentObj.commentId
     );
     comments = [
       ...comments.slice(0, commentIndex),
@@ -105,10 +105,10 @@ function CommentList({
   return (
     <div>
       <CommentBox>
-        <CommentOwner>{owner}</CommentOwner>
-        <Comment>{comment}</Comment>
+        <CommentOwner>{commentObj.owner}</CommentOwner>
+        <Comment>{commentObj.comment}</Comment>
         <CommentInfoBox>
-          <CommentInfoDate>{createdAt}</CommentInfoDate>
+          <CommentInfoDate>{commentObj.createdAt}</CommentInfoDate>
           {loggedInUser.isLoggedIn ? (
             <CommentReplyBtn onClick={() => setReplyClicked(true)}>
               답글작성
@@ -126,7 +126,7 @@ function CommentList({
         </CommentInfoBox>
       </CommentBox>
       <Reply
-        commentId={commentId ? commentId : ""}
+        commentId={commentObj.commentId ? commentObj.commentId : ""}
         replyClicked={replyClicked}
         setReplyClicked={setReplyClicked}
         isDeleteComment={isDeleteComment}
